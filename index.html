@@ -59,10 +59,7 @@
     .page { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
 
     /* ── HERO ── */
-    #hero {
-      padding: 9rem 0 5rem;
-      border-bottom: 1px solid var(--rule);
-    }
+    #hero { padding: 9rem 0 5rem; border-bottom: 1px solid var(--rule); }
     .hero-eyebrow {
       font-size: 0.75rem; font-weight: 400;
       letter-spacing: 0.12em; text-transform: uppercase;
@@ -95,10 +92,7 @@
     .link-ghost { border: 1px solid var(--rule); color: var(--mid); }
     .link-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-    .hero-meta {
-      margin-top: 3rem;
-      display: flex; gap: 3rem; flex-wrap: wrap;
-    }
+    .hero-meta { margin-top: 3rem; display: flex; gap: 3rem; flex-wrap: wrap; }
     .meta-label {
       font-size: 0.68rem; font-weight: 500;
       letter-spacing: 0.1em; text-transform: uppercase;
@@ -110,30 +104,21 @@
     /* ── SECTIONS ── */
     section { padding: 5rem 0; border-bottom: 1px solid var(--rule); }
     section:last-of-type { border-bottom: none; }
-
-    .section-header {
-      display: flex; align-items: baseline; gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
+    .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
     .section-num {
       font-size: 0.7rem; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--light);
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--light);
     }
     h2 {
       font-family: 'EB Garamond', serif;
-      font-size: 1.8rem; font-weight: 500;
-      color: var(--ink);
+      font-size: 1.8rem; font-weight: 500; color: var(--ink);
     }
 
     /* ── PROJECTS ── */
     .project-item {
-      padding: 2rem 0;
-      border-top: 1px solid var(--rule);
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 2rem;
-      align-items: start;
+      padding: 2rem 0; border-top: 1px solid var(--rule);
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 2rem; align-items: start;
     }
     .project-item:last-child { border-bottom: 1px solid var(--rule); }
     .project-tag {
@@ -155,25 +140,92 @@
       background: var(--surface);
     }
     .project-right p { font-size: 0.9rem; color: var(--mid); line-height: 1.75; }
-    .project-img-slot {
-      margin-top: 1rem; width: 100%; aspect-ratio: 16/9;
-      background: var(--surface); border: 1px dashed var(--rule);
-      border-radius: 2px; display: flex; align-items: center;
-      justify-content: center; overflow: hidden;
+
+    /* ── IMAGE GALLERY ── */
+    .gallery {
+      margin-top: 1rem;
+      position: relative;
     }
-    .project-img-slot img { width: 100%; height: 100%; object-fit: cover; display: none; }
-    .project-img-slot img.loaded { display: block; }
-    .img-placeholder {
-      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-      font-size: 0.7rem; color: var(--light); letter-spacing: 0.06em;
+    .gallery-viewport {
+      width: 100%; aspect-ratio: 16/9;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
     }
-    .add-img-btn {
+    .gallery-slides {
+      display: flex;
+      width: 100%; height: 100%;
+      transition: transform 0.35s ease;
+    }
+    .gallery-slide {
+      min-width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--surface);
+      position: relative;
+    }
+    .gallery-slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .gallery-slide .slide-placeholder {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0.6rem; width: 100%; height: 100%;
+      font-size: 0.7rem; color: var(--light);
+      letter-spacing: 0.06em;
+    }
+    .slide-placeholder svg {
+      width: 28px; height: 28px; opacity: 0.3;
+    }
+
+    /* Gallery nav arrows */
+    .gallery-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 32px; height: 32px;
+      background: rgba(250,250,248,0.92);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 2;
+      font-size: 0.8rem; color: var(--mid);
+      transition: all 0.2s;
+      line-height: 1;
+    }
+    .gallery-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .gallery-btn.prev { left: 8px; }
+    .gallery-btn.next { right: 8px; }
+    .gallery-btn:disabled { opacity: 0.25; cursor: default; }
+    .gallery-btn:disabled:hover { border-color: var(--rule); color: var(--mid); }
+
+    /* Dots */
+    .gallery-dots {
+      display: flex; justify-content: center; gap: 0.4rem;
+      margin-top: 0.6rem;
+    }
+    .gallery-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--rule); border: none; padding: 0;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .gallery-dot.active { background: var(--accent); }
+
+    /* Gallery footer bar */
+    .gallery-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+    .gallery-counter {
+      font-size: 0.68rem; color: var(--light); letter-spacing: 0.06em;
+    }
+    .gallery-add-btn {
       font-size: 0.7rem; color: var(--accent);
       background: none; border: 1px solid var(--rule);
-      padding: 0.25rem 0.75rem; border-radius: 2px;
+      padding: 0.2rem 0.65rem; border-radius: 2px;
       cursor: pointer; font-family: inherit; transition: all 0.2s;
     }
-    .add-img-btn:hover { border-color: var(--accent); background: var(--surface); }
+    .gallery-add-btn:hover { border-color: var(--accent); background: var(--surface); }
 
     /* ── EXPERIENCE ── */
     .exp-item {
@@ -192,9 +244,7 @@
     .exp-right li { font-size: 0.88rem; color: var(--mid); line-height: 1.7; margin-bottom: 0.35rem; }
 
     /* ── SKILLS ── */
-    .skills-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
-    }
+    .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
     .skill-group h4 {
       font-size: 0.72rem; font-weight: 500;
       letter-spacing: 0.1em; text-transform: uppercase;
@@ -210,8 +260,7 @@
     /* ── EDUCATION ── */
     .edu-block {
       display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;
-      padding: 2rem 0; border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
+      padding: 2rem 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
     }
     .edu-school-label {
       font-size: 0.68rem; font-weight: 500;
@@ -221,14 +270,11 @@
     .edu-dates { font-size: 0.82rem; color: var(--mid); }
     .edu-right h3 {
       font-family: 'EB Garamond', serif;
-      font-size: 1.4rem; font-weight: 500;
-      color: var(--ink); margin-bottom: 0.25rem;
+      font-size: 1.4rem; font-weight: 500; color: var(--ink); margin-bottom: 0.25rem;
     }
     .edu-degree { font-size: 0.88rem; color: var(--mid); margin-bottom: 0.3rem; }
     .edu-conc { font-size: 0.78rem; color: var(--accent); font-weight: 500; letter-spacing: 0.04em; }
-    .edu-gpa-row {
-      margin-top: 1rem; display: inline-flex; align-items: baseline; gap: 0.4rem;
-    }
+    .edu-gpa-row { margin-top: 1rem; display: inline-flex; align-items: baseline; gap: 0.4rem; }
     .edu-gpa-num {
       font-family: 'EB Garamond', serif;
       font-size: 2rem; font-weight: 500; color: var(--ink);
@@ -250,10 +296,7 @@
     .contact-val a:hover { color: var(--accent-warm); }
 
     /* ── FOOTER ── */
-    footer {
-      padding: 2rem 0; border-top: 1px solid var(--rule);
-      font-size: 0.72rem; color: var(--light);
-    }
+    footer { padding: 2rem 0; border-top: 1px solid var(--rule); font-size: 0.72rem; color: var(--light); }
     footer .inner {
       max-width: 900px; margin: 0 auto; padding: 0 2rem;
       display: flex; justify-content: space-between; align-items: center;
@@ -327,6 +370,7 @@
       <h2>Selected Projects</h2>
     </div>
 
+    <!-- LECTER -->
     <div class="project-item reveal">
       <div>
         <div class="project-tag">Exoskeleton · HRI</div>
@@ -337,13 +381,11 @@
       </div>
       <div class="project-right">
         <p>10 DOF lower limb exoskeleton exploring comprehensive human-robot control interfaces via reinforcement learning trained on a high-fidelity human model. Responsible for URDF modeling of all 10 degrees of freedom, multi-material footplate assembly, full rewiring under battery power, and a custom PCB with dual E-Stop system.</p>
-        <div class="project-img-slot" id="img-lecter">
-          <img alt="LECTER Exoskeleton"/>
-          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-lecter')">+ Add Image</button></div>
-        </div>
+        <div class="gallery" data-gallery="lecter" data-max="5"></div>
       </div>
     </div>
 
+    <!-- Hip Exo -->
     <div class="project-item reveal">
       <div>
         <div class="project-tag">Exoskeleton · Project Lead</div>
@@ -354,13 +396,11 @@
       </div>
       <div class="project-right">
         <p>2 DOF hip exoskeleton as an accessible ML testbed for studying metabolic cost reduction in walking. Led complete redesign from the LECTER framework, FEA structural validation, hip-width adjustability, URDF modeling, and EPIC grant submission to ERAU.</p>
-        <div class="project-img-slot" id="img-hipexo">
-          <img alt="Hip Exoskeleton"/>
-          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-hipexo')">+ Add Image</button></div>
-        </div>
+        <div class="gallery" data-gallery="hipexo" data-max="5"></div>
       </div>
     </div>
 
+    <!-- OpenMutt -->
     <div class="project-item reveal">
       <div>
         <div class="project-tag">Robotics · Open Source</div>
@@ -371,13 +411,11 @@
       </div>
       <div class="project-right">
         <p>Fully open-source quadruped robot designed as a low-cost teaching platform. Redesigned the electrical box and midsection for compactness, designed precision joint jigs with tight tolerances, and produced a LiDAR scanner mount and other auxiliary components.</p>
-        <div class="project-img-slot" id="img-openmutt">
-          <img alt="OpenMutt Quadruped"/>
-          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-openmutt')">+ Add Image</button></div>
-        </div>
+        <div class="gallery" data-gallery="openmutt" data-max="5"></div>
       </div>
     </div>
 
+    <!-- OpenArm -->
     <div class="project-item reveal">
       <div>
         <div class="project-tag">Robotics · Open Source</div>
@@ -388,13 +426,11 @@
       </div>
       <div class="project-right">
         <p>3 DOF robotic arm accessory for OpenMutt, expanding manipulation capability while retaining open-source principles. Led full mechanical design, URDF creation, and jointly manufactured cycloidal gearboxes and structural assembly.</p>
-        <div class="project-img-slot" id="img-openarm">
-          <img alt="OpenArm Robotic Arm"/>
-          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-openarm')">+ Add Image</button></div>
-        </div>
+        <div class="gallery" data-gallery="openarm" data-max="5"></div>
       </div>
     </div>
 
+    <!-- TVC Rocket -->
     <div class="project-item reveal">
       <div>
         <div class="project-tag">Aerospace · Propulsion</div>
@@ -405,13 +441,11 @@
       </div>
       <div class="project-right">
         <p>Design and development of a thrust vector controlled rocket for active flight stabilization, integrating embedded control systems with a gimbal mechanism for directional thrust management.</p>
-        <div class="project-img-slot" id="img-rocket">
-          <img alt="TVC Rocket"/>
-          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-rocket')">+ Add Image</button></div>
-        </div>
+        <div class="gallery" data-gallery="rocket" data-max="5"></div>
       </div>
     </div>
 
+    <!-- PCB -->
     <div class="project-item reveal">
       <div>
         <div class="project-tag">Electronics · Embedded</div>
@@ -422,10 +456,7 @@
       </div>
       <div class="project-right">
         <p>Custom PCB combining flight computer and development board functionality for rocketry and robotics applications, consolidating sensor interfaces, power regulation, and processing onto a single board.</p>
-        <div class="project-img-slot" id="img-pcb">
-          <img alt="Flight Computer PCB"/>
-          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-pcb')">+ Add Image</button></div>
-        </div>
+        <div class="gallery" data-gallery="pcb" data-max="5"></div>
       </div>
     </div>
 
@@ -438,18 +469,20 @@
     </div>
 
     <div class="exp-item reveal">
-  <div>
-    <div class="exp-date">September 2025 — Present</div>
-    <div class="exp-org">Embler Control Systems<br>Technical Startup</div>
-  </div>
-  <div class="exp-right">
-    <h3>Chief Technical Officer &amp; Technical Co-Founder</h3>
-    <ul>
-      <li>Co-founded a 15-person aerospace startup developing flight computer systems for rocketry and embedded applications.</li>
-      <li>Leading all technical direction, product architecture, and engineering decisions for hardware currently in closed beta.</li>
-    </ul>
-  </div>
-</div>
+      <div>
+        <div class="exp-date">September 2025 — Present</div>
+        <div class="exp-org">Embler Control Systems<br>Technical Startup</div>
+      </div>
+      <div class="exp-right">
+        <h3>Chief Technical Officer &amp; Technical Co-Founder</h3>
+        <ul>
+          <li>Co-founded a 15-person aerospace startup developing flight computer systems for rocketry and embedded applications.</li>
+          <li>Leading all technical direction, product architecture, and engineering decisions for hardware currently in closed beta.</li>
+          <li>Competing for county-level business awards as an early-stage venture.</li>
+        </ul>
+      </div>
+    </div>
+
     <div class="exp-item reveal">
       <div>
         <div class="exp-date">Fall 2025 — Present</div>
@@ -607,6 +640,7 @@
 </footer>
 
 <script>
+  // ── SCROLL REVEAL ──
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
     entries.forEach((e, i) => {
@@ -618,23 +652,111 @@
   }, { threshold: 0.08 });
   reveals.forEach(r => observer.observe(r));
 
-  function addImage(containerId) {
+  // ── GALLERY SYSTEM ──
+  // State: { galleryId: [dataURL, dataURL, ...] }
+  const galleryState = {};
+
+  function buildGallery(el) {
+    const id = el.dataset.gallery;
+    const max = parseInt(el.dataset.max) || 5;
+    galleryState[id] = galleryState[id] || [];
+    renderGallery(el, id, max);
+  }
+
+  function renderGallery(el, id, max) {
+    const images = galleryState[id];
+    const count = Math.max(images.length, 1); // always show at least 1 slide
+    const current = parseInt(el.dataset.current || '0');
+    const clamped = Math.min(current, images.length === 0 ? 0 : images.length - 1);
+
+    el.innerHTML = `
+      <div class="gallery-viewport">
+        <div class="gallery-slides" style="transform: translateX(-${clamped * 100}%)">
+          ${images.length === 0
+            ? `<div class="gallery-slide">
+                <div class="slide-placeholder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <path d="M21 15l-5-5L5 21"/>
+                  </svg>
+                  <span>No images yet</span>
+                </div>
+              </div>`
+            : images.map((src, i) =>
+                `<div class="gallery-slide"><img src="${src}" alt="Project image ${i+1}"/></div>`
+              ).join('')
+          }
+        </div>
+        ${images.length > 1
+          ? `<button class="gallery-btn prev" onclick="galleryNav('${id}', -1)" ${clamped === 0 ? 'disabled' : ''}>&#8592;</button>
+             <button class="gallery-btn next" onclick="galleryNav('${id}', 1)" ${clamped >= images.length - 1 ? 'disabled' : ''}>&#8594;</button>`
+          : ''
+        }
+      </div>
+      ${images.length > 1
+        ? `<div class="gallery-dots">
+            ${images.map((_, i) =>
+              `<button class="gallery-dot ${i === clamped ? 'active' : ''}" onclick="galleryGoTo('${id}', ${i})"></button>`
+            ).join('')}
+          </div>`
+        : ''
+      }
+      <div class="gallery-footer">
+        <span class="gallery-counter">${images.length > 0 ? `${clamped + 1} / ${images.length}` : '0 / 0'}</span>
+        ${images.length < max
+          ? `<button class="gallery-add-btn" onclick="galleryAddImage('${id}', ${max})">+ Add Photo</button>`
+          : `<span class="gallery-counter" style="color:var(--accent)">Max ${max} photos</span>`
+        }
+      </div>
+    `;
+    el.dataset.current = clamped;
+  }
+
+  function galleryNav(id, dir) {
+    const el = document.querySelector(`[data-gallery="${id}"]`);
+    const current = parseInt(el.dataset.current || '0');
+    const next = current + dir;
+    el.dataset.current = next;
+    renderGallery(el, id, parseInt(el.dataset.max));
+  }
+
+  function galleryGoTo(id, index) {
+    const el = document.querySelector(`[data-gallery="${id}"]`);
+    el.dataset.current = index;
+    renderGallery(el, id, parseInt(el.dataset.max));
+  }
+
+  function galleryAddImage(id, max) {
     const input = document.createElement('input');
-    input.type = 'file'; input.accept = 'image/*';
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.multiple = true;
     input.onchange = e => {
-      const file = e.target.files[0]; if (!file) return;
-      const reader = new FileReader();
-      reader.onload = ev => {
-        const container = document.getElementById(containerId);
-        const img = container.querySelector('img');
-        const placeholder = container.querySelector('.img-placeholder');
-        img.src = ev.target.result; img.classList.add('loaded');
-        placeholder.style.display = 'none';
-      };
-      reader.readAsDataURL(file);
+      const files = Array.from(e.target.files);
+      const remaining = max - (galleryState[id] || []).length;
+      const toLoad = files.slice(0, remaining);
+      let loaded = 0;
+      toLoad.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          galleryState[id].push(ev.target.result);
+          loaded++;
+          if (loaded === toLoad.length) {
+            const el = document.querySelector(`[data-gallery="${id}"]`);
+            // jump to the first newly added image
+            el.dataset.current = galleryState[id].length - toLoad.length;
+            renderGallery(el, id, max);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
     };
     input.click();
   }
+
+  // Init all galleries on load
+  document.querySelectorAll('.gallery').forEach(buildGallery);
 </script>
 </body>
 </html>
