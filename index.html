@@ -322,6 +322,7 @@
       <li><a href="#projects">Projects</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
+      <li><a href="#involvement">Involvement</a></li>
       <li><a href="#education">Education</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -373,7 +374,7 @@
     <!-- LECTER -->
     <div class="project-item reveal">
       <div>
-        <div class="project-tag">Exoskeleton · HRI</div>
+        <div class="project-tag">Exoskeleton · Robotics Learning Lab</div>
         <h3>LECTER — Full Lower Limb Exoskeleton</h3>
         <div class="project-pills">
           <span class="pill">10 DOF</span><span class="pill">URDF</span><span class="pill">PCB Design</span><span class="pill">FEA</span><span class="pill">Reinforcement Learning</span>
@@ -388,7 +389,7 @@
     <!-- Hip Exo -->
     <div class="project-item reveal">
       <div>
-        <div class="project-tag">Exoskeleton · Project Lead</div>
+        <div class="project-tag">Exoskeleton · Robotics Learning Lab</div>
         <h3>Hip Isolated Exoskeleton</h3>
         <div class="project-pills">
           <span class="pill">2 DOF</span><span class="pill">FEA</span><span class="pill">Grant Writing</span><span class="pill">URDF</span>
@@ -403,7 +404,7 @@
     <!-- OpenMutt -->
     <div class="project-item reveal">
       <div>
-        <div class="project-tag">Robotics · Open Source</div>
+        <div class="project-tag">Robotics · Engineering Physics Propulsion Lab</div>
         <h3>OpenMutt — 3D Printed Quadruped</h3>
         <div class="project-pills">
           <span class="pill">Open Source</span><span class="pill">3D Printing</span><span class="pill">CAD</span><span class="pill">LiDAR</span>
@@ -418,7 +419,7 @@
     <!-- OpenArm -->
     <div class="project-item reveal">
       <div>
-        <div class="project-tag">Robotics · Open Source</div>
+        <div class="project-tag">Robotics · Engineering Physics Propulsion Lab</div>
         <h3>OpenArm — 3D Printed Robotic Arm</h3>
         <div class="project-pills">
           <span class="pill">3 DOF</span><span class="pill">URDF</span><span class="pill">Cycloidal Gearbox</span><span class="pill">3D Printing</span>
@@ -433,14 +434,14 @@
     <!-- TVC Rocket -->
     <div class="project-item reveal">
       <div>
-        <div class="project-tag">Aerospace · Propulsion</div>
+        <div class="project-tag">Aerospace · Embler Control Systems</div>
         <h3>Thrust Vector Controlled Rocket</h3>
         <div class="project-pills">
-          <span class="pill">TVC</span><span class="pill">Embedded Systems</span><span class="pill">Controls</span>
+          <span class="pill">TVC</span><span class="pill">Embedded Systems</span><span class="pill">Controls</span><span class="pill">Testbed</span>
         </div>
       </div>
       <div class="project-right">
-        <p>Design and development of a thrust vector controlled rocket for active flight stabilization, integrating embedded control systems with a gimbal mechanism for directional thrust management.</p>
+        <p>Design and development of a thrust vector controlled rocket serving as a hardware testbed for Embler Control Systems flight computers. Integrates embedded control systems with a gimbal mechanism for directional thrust management, allowing real-world validation of flight computer firmware and sensor integration.</p>
         <div class="gallery" data-gallery="rocket" data-max="5"></div>
       </div>
     </div>
@@ -448,14 +449,14 @@
     <!-- PCB -->
     <div class="project-item reveal">
       <div>
-        <div class="project-tag">Electronics · Embedded</div>
+        <div class="project-tag">Electronics · Embler Control Systems</div>
         <h3>Integrated Flight Computer / Dev Board PCB</h3>
         <div class="project-pills">
-          <span class="pill">PCB Design</span><span class="pill">EasyEDA</span><span class="pill">Embedded</span><span class="pill">Sensors</span>
+          <span class="pill">PCB Design</span><span class="pill">EasyEDA</span><span class="pill">Embedded</span><span class="pill">Internal MCU</span><span class="pill">Sensors</span>
         </div>
       </div>
       <div class="project-right">
-        <p>Custom PCB combining flight computer and development board functionality for rocketry and robotics applications, consolidating sensor interfaces, power regulation, and processing onto a single board.</p>
+        <p>Fully integrated flight computer PCB developed for Embler Control Systems, featuring an internal MCU and all supporting architecture on a single board — moving beyond the standard approach of pairing a breakout PCB with an off-the-shelf development board. Personally designed the PCB, developed multiple prior hardware iterations, and wrote a large portion of the firmware. Paired with a custom OS and installer application to simplify sensor configuration.</p>
         <div class="gallery" data-gallery="pcb" data-max="5"></div>
       </div>
     </div>
@@ -471,14 +472,16 @@
     <div class="exp-item reveal">
       <div>
         <div class="exp-date">September 2025 — Present</div>
-        <div class="exp-org">Embler Control Systems<br>Technical Startup</div>
+        <div class="exp-org"><a href="https://emblercontrolsystems.com" target="_blank" style="color:var(--mid);text-decoration:none;">Embler Control Systems</a><br>Technical Startup</div>
       </div>
       <div class="exp-right">
         <h3>Chief Technical Officer &amp; Technical Co-Founder</h3>
         <ul>
-          <li>Co-founded a 15-person aerospace startup developing flight computer systems for rocketry and embedded applications.</li>
-          <li>Leading all technical direction, product architecture, and engineering decisions for hardware currently in closed beta.</li>
-          <li>Competing for county-level business awards as an early-stage venture.</li>
+          <li>Co-founded a 15-person aerospace startup developing fully integrated flight computers for rocketry and embedded applications — distinct from breakout-board solutions by featuring an internal MCU with all supporting architecture on a single board.</li>
+          <li>Personally designed the flight computer PCB, developed and tested multiple prior hardware iterations that led to the current design, and wrote a large portion of the firmware and software.</li>
+          <li>Leading development of a designated OS and program installer application to significantly simplify sensor interfacing and configuration.</li>
+          <li>Responsible for mechanical design of rocketry platforms used as testbeds for the flight computer systems.</li>
+          <li>Competing for county-level business awards as an early-stage venture with hardware currently in closed beta.</li>
         </ul>
       </div>
     </div>
@@ -561,16 +564,38 @@
         </ul>
       </div>
       <div class="skill-group">
-        <h4>Electrical</h4>
+        <h4>Electrical &amp; Embedded</h4>
         <ul>
           <li>PCB Design (EasyEDA)</li><li>Soldering</li>
-          <li>Breadboarding</li><li>Wiring &amp; Harness Design</li><li>Power Systems</li>
+          <li>Breadboarding</li><li>Wiring &amp; Harness Design</li>
+          <li>Arduino</li><li>STM32</li>
+          <li>Raspberry Pi</li><li>Teensy</li>
         </ul>
       </div>
       <div class="skill-group">
         <h4>Programming</h4>
         <ul>
-          <li>C / C++</li><li>Python</li><li>Java</li><li>Embedded Systems</li>
+          <li>C / C++</li><li>Python</li><li>Java</li>
+          <li>ROS</li><li>Embedded Firmware</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="involvement">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>Involvement</h2>
+    </div>
+    <div class="exp-item reveal" style="border-top: 1px solid var(--rule);">
+      <div>
+        <div class="exp-date">Fall 2024 — Present</div>
+        <div class="exp-org">ERAU, Daytona Beach</div>
+      </div>
+      <div class="exp-right">
+        <h3>Society of Physics Students</h3>
+        <ul>
+          <li>Active member of the ERAU chapter of the national Society of Physics Students (SPS), engaging with the broader physics and applied sciences community on campus.</li>
         </ul>
       </div>
     </div>
@@ -578,7 +603,7 @@
 
   <section id="education">
     <div class="section-header">
-      <span class="section-num">04</span>
+      <span class="section-num">05</span>
       <h2>Education</h2>
     </div>
     <div class="edu-block reveal">
@@ -601,7 +626,7 @@
 
   <section id="contact">
     <div class="section-header">
-      <span class="section-num">05</span>
+      <span class="section-num">06</span>
       <h2>Contact</h2>
     </div>
     <div class="contact-grid reveal">
@@ -612,7 +637,7 @@
       <div class="contact-details">
         <div>
           <div class="contact-label">Email</div>
-          <div class="contact-val"><a href="mailto:emblerk@my.erau.edu">emblerk@my.erau.edu</a></div>
+          <div class="contact-val"><a href="/cdn-cgi/l/email-protection#c7a2aaa5aba2b5ac87aabee9a2b5a6b2e9a2a3b2"><span class="__cf_email__" data-cfemail="e6838b848a83948da68b9fc883948793c8838293">[email&#160;protected]</span></a></div>
         </div>
         <div>
           <div class="contact-label">Phone</div>
@@ -639,7 +664,7 @@
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── SCROLL REVEAL ──
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
@@ -746,17 +771,4 @@
             const el = document.querySelector(`[data-gallery="${id}"]`);
             // jump to the first newly added image
             el.dataset.current = galleryState[id].length - toLoad.length;
-            renderGallery(el, id, max);
-          }
-        };
-        reader.readAsDataURL(file);
-      });
-    };
-    input.click();
-  }
-
-  // Init all galleries on load
-  document.querySelectorAll('.gallery').forEach(buildGallery);
-</script>
-</body>
-</html>
+            render
