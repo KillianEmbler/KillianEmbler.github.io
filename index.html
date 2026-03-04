@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Killian Embler — Engineering Physics</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #fafaf8;
+      --ink: #1a1a18;
+      --mid: #5a5a55;
+      --light: #9a9a92;
+      --rule: #e0e0d8;
+      --accent: #1a4a7a;
+      --accent-warm: #8b3a1a;
+      --surface: #f2f2ee;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--rule);
+    }
+    nav .inner {
+      max-width: 900px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 52px;
+    }
+    .nav-name {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.1rem; font-weight: 500;
+      color: var(--ink); letter-spacing: 0.01em;
+    }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav a {
+      font-size: 0.78rem; font-weight: 400;
+      color: var(--mid); text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── HERO ── */
+    #hero {
+      padding: 9rem 0 5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.25rem;
+    }
+    h1 {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 500; line-height: 1.1;
+      color: var(--ink); margin-bottom: 1.5rem;
+    }
+    .hero-body {
+      max-width: 560px;
+      font-size: 1rem; color: var(--mid); line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+    .hero-body strong { color: var(--ink); font-weight: 500; }
+    .hero-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .link-btn {
+      display: inline-block;
+      padding: 0.55rem 1.25rem;
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .link-primary { background: var(--accent); color: #fff; }
+    .link-primary:hover { background: #123660; }
+    .link-ghost { border: 1px solid var(--rule); color: var(--mid); }
+    .link-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-meta {
+      margin-top: 3rem;
+      display: flex; gap: 3rem; flex-wrap: wrap;
+    }
+    .meta-label {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--light); margin-bottom: 0.2rem;
+    }
+    .meta-val { font-size: 0.9rem; color: var(--mid); }
+    .meta-val strong { color: var(--ink); font-weight: 500; }
+
+    /* ── SECTIONS ── */
+    section { padding: 5rem 0; border-bottom: 1px solid var(--rule); }
+    section:last-of-type { border-bottom: none; }
+
+    .section-header {
+      display: flex; align-items: baseline; gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .section-num {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--light);
+    }
+    h2 {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.8rem; font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* ── PROJECTS ── */
+    .project-item {
+      padding: 2rem 0;
+      border-top: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .project-item:last-child { border-bottom: 1px solid var(--rule); }
+    .project-tag {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.4rem;
+    }
+    .project-item h3 {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.2rem; font-weight: 500;
+      color: var(--ink); line-height: 1.3; margin-bottom: 0.5rem;
+    }
+    .project-pills { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.75rem; }
+    .pill {
+      font-size: 0.65rem; font-weight: 400;
+      letter-spacing: 0.04em; color: var(--mid);
+      border: 1px solid var(--rule);
+      padding: 0.15rem 0.5rem; border-radius: 2px;
+      background: var(--surface);
+    }
+    .project-right p { font-size: 0.9rem; color: var(--mid); line-height: 1.75; }
+    .project-img-slot {
+      margin-top: 1rem; width: 100%; aspect-ratio: 16/9;
+      background: var(--surface); border: 1px dashed var(--rule);
+      border-radius: 2px; display: flex; align-items: center;
+      justify-content: center; overflow: hidden;
+    }
+    .project-img-slot img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .project-img-slot img.loaded { display: block; }
+    .img-placeholder {
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; color: var(--light); letter-spacing: 0.06em;
+    }
+    .add-img-btn {
+      font-size: 0.7rem; color: var(--accent);
+      background: none; border: 1px solid var(--rule);
+      padding: 0.25rem 0.75rem; border-radius: 2px;
+      cursor: pointer; font-family: inherit; transition: all 0.2s;
+    }
+    .add-img-btn:hover { border-color: var(--accent); background: var(--surface); }
+
+    /* ── EXPERIENCE ── */
+    .exp-item {
+      padding: 2rem 0; border-top: 1px solid var(--rule);
+      display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;
+    }
+    .exp-item:last-child { border-bottom: 1px solid var(--rule); }
+    .exp-date { font-size: 0.75rem; color: var(--light); margin-bottom: 0.3rem; }
+    .exp-org { font-size: 0.82rem; color: var(--mid); }
+    .exp-right h3 {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.15rem; font-weight: 500;
+      color: var(--ink); margin-bottom: 0.75rem;
+    }
+    .exp-right ul { padding-left: 1.1rem; }
+    .exp-right li { font-size: 0.88rem; color: var(--mid); line-height: 1.7; margin-bottom: 0.35rem; }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+    }
+    .skill-group h4 {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule);
+    }
+    .skill-group ul { list-style: none; }
+    .skill-group li {
+      font-size: 0.82rem; color: var(--mid);
+      padding: 0.22rem 0; border-bottom: 1px solid var(--surface);
+    }
+
+    /* ── EDUCATION ── */
+    .edu-block {
+      display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;
+      padding: 2rem 0; border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+    .edu-school-label {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--light); margin-bottom: 0.25rem;
+    }
+    .edu-dates { font-size: 0.82rem; color: var(--mid); }
+    .edu-right h3 {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.4rem; font-weight: 500;
+      color: var(--ink); margin-bottom: 0.25rem;
+    }
+    .edu-degree { font-size: 0.88rem; color: var(--mid); margin-bottom: 0.3rem; }
+    .edu-conc { font-size: 0.78rem; color: var(--accent); font-weight: 500; letter-spacing: 0.04em; }
+    .edu-gpa-row {
+      margin-top: 1rem; display: inline-flex; align-items: baseline; gap: 0.4rem;
+    }
+    .edu-gpa-num {
+      font-family: 'EB Garamond', serif;
+      font-size: 2rem; font-weight: 500; color: var(--ink);
+    }
+    .edu-gpa-label { font-size: 0.72rem; color: var(--light); letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* ── CONTACT ── */
+    #contact { border-bottom: none; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .contact-intro { font-size: 1rem; color: var(--mid); line-height: 1.8; }
+    .contact-intro p + p { margin-top: 1rem; }
+    .contact-details { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-label {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--light);
+    }
+    .contact-val { font-size: 0.9rem; }
+    .contact-val a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+    .contact-val a:hover { color: var(--accent-warm); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 0; border-top: 1px solid var(--rule);
+      font-size: 0.72rem; color: var(--light);
+    }
+    footer .inner {
+      max-width: 900px; margin: 0 auto; padding: 0 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 680px) {
+      .project-item, .exp-item, .edu-block, .contact-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="nav-name">Killian Embler</div>
+    <ul>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page">
+
+  <section id="hero">
+    <div class="hero-eyebrow">Engineering Physics · Spacecraft Instrumentation</div>
+    <h1>Killian Embler</h1>
+    <p class="hero-body">
+      Robotics researcher and hardware engineer at <strong>Embry-Riddle Aeronautical University</strong>.
+      I design and build physical systems — from full lower-limb exoskeletons to open-source quadrupeds —
+      with a focus on mechatronics, mechanical design, and spacecraft applications.
+    </p>
+    <div class="hero-links">
+      <a href="https://www.linkedin.com/in/killian-embler-56a858146" target="_blank" class="link-btn link-primary">LinkedIn</a>
+      <a href="https://github.com/KillianEmbler" target="_blank" class="link-btn link-ghost">GitHub</a>
+      <a href="#contact" class="link-btn link-ghost">Contact</a>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <div class="meta-label">University</div>
+        <div class="meta-val"><strong>ERAU</strong> Daytona Beach</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Expected Graduation</div>
+        <div class="meta-val">Spring 2028</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">GPA</div>
+        <div class="meta-val"><strong>4.00</strong> / 4.00</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Open To</div>
+        <div class="meta-val">Internships · Research</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>Selected Projects</h2>
+    </div>
+
+    <div class="project-item reveal">
+      <div>
+        <div class="project-tag">Exoskeleton · HRI</div>
+        <h3>LECTER — Full Lower Limb Exoskeleton</h3>
+        <div class="project-pills">
+          <span class="pill">10 DOF</span><span class="pill">URDF</span><span class="pill">PCB Design</span><span class="pill">FEA</span><span class="pill">Reinforcement Learning</span>
+        </div>
+      </div>
+      <div class="project-right">
+        <p>10 DOF lower limb exoskeleton exploring comprehensive human-robot control interfaces via reinforcement learning trained on a high-fidelity human model. Responsible for URDF modeling of all 10 degrees of freedom, multi-material footplate assembly, full rewiring under battery power, and a custom PCB with dual E-Stop system.</p>
+        <div class="project-img-slot" id="img-lecter">
+          <img alt="LECTER Exoskeleton"/>
+          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-lecter')">+ Add Image</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item reveal">
+      <div>
+        <div class="project-tag">Exoskeleton · Project Lead</div>
+        <h3>Hip Isolated Exoskeleton</h3>
+        <div class="project-pills">
+          <span class="pill">2 DOF</span><span class="pill">FEA</span><span class="pill">Grant Writing</span><span class="pill">URDF</span>
+        </div>
+      </div>
+      <div class="project-right">
+        <p>2 DOF hip exoskeleton as an accessible ML testbed for studying metabolic cost reduction in walking. Led complete redesign from the LECTER framework, FEA structural validation, hip-width adjustability, URDF modeling, and EPIC grant submission to ERAU.</p>
+        <div class="project-img-slot" id="img-hipexo">
+          <img alt="Hip Exoskeleton"/>
+          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-hipexo')">+ Add Image</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item reveal">
+      <div>
+        <div class="project-tag">Robotics · Open Source</div>
+        <h3>OpenMutt — 3D Printed Quadruped</h3>
+        <div class="project-pills">
+          <span class="pill">Open Source</span><span class="pill">3D Printing</span><span class="pill">CAD</span><span class="pill">LiDAR</span>
+        </div>
+      </div>
+      <div class="project-right">
+        <p>Fully open-source quadruped robot designed as a low-cost teaching platform. Redesigned the electrical box and midsection for compactness, designed precision joint jigs with tight tolerances, and produced a LiDAR scanner mount and other auxiliary components.</p>
+        <div class="project-img-slot" id="img-openmutt">
+          <img alt="OpenMutt Quadruped"/>
+          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-openmutt')">+ Add Image</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item reveal">
+      <div>
+        <div class="project-tag">Robotics · Open Source</div>
+        <h3>OpenArm — 3D Printed Robotic Arm</h3>
+        <div class="project-pills">
+          <span class="pill">3 DOF</span><span class="pill">URDF</span><span class="pill">Cycloidal Gearbox</span><span class="pill">3D Printing</span>
+        </div>
+      </div>
+      <div class="project-right">
+        <p>3 DOF robotic arm accessory for OpenMutt, expanding manipulation capability while retaining open-source principles. Led full mechanical design, URDF creation, and jointly manufactured cycloidal gearboxes and structural assembly.</p>
+        <div class="project-img-slot" id="img-openarm">
+          <img alt="OpenArm Robotic Arm"/>
+          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-openarm')">+ Add Image</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item reveal">
+      <div>
+        <div class="project-tag">Aerospace · Propulsion</div>
+        <h3>Thrust Vector Controlled Rocket</h3>
+        <div class="project-pills">
+          <span class="pill">TVC</span><span class="pill">Embedded Systems</span><span class="pill">Controls</span>
+        </div>
+      </div>
+      <div class="project-right">
+        <p>Design and development of a thrust vector controlled rocket for active flight stabilization, integrating embedded control systems with a gimbal mechanism for directional thrust management.</p>
+        <div class="project-img-slot" id="img-rocket">
+          <img alt="TVC Rocket"/>
+          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-rocket')">+ Add Image</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item reveal">
+      <div>
+        <div class="project-tag">Electronics · Embedded</div>
+        <h3>Integrated Flight Computer / Dev Board PCB</h3>
+        <div class="project-pills">
+          <span class="pill">PCB Design</span><span class="pill">EasyEDA</span><span class="pill">Embedded</span><span class="pill">Sensors</span>
+        </div>
+      </div>
+      <div class="project-right">
+        <p>Custom PCB combining flight computer and development board functionality for rocketry and robotics applications, consolidating sensor interfaces, power regulation, and processing onto a single board.</p>
+        <div class="project-img-slot" id="img-pcb">
+          <img alt="Flight Computer PCB"/>
+          <div class="img-placeholder"><span>PHOTO</span><button class="add-img-btn" onclick="addImage('img-pcb')">+ Add Image</button></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <section id="experience">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>Experience</h2>
+    </div>
+
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-date">Fall 2025 — Present</div>
+        <div class="exp-org">Robotics Learning Lab<br>ERAU, Daytona Beach</div>
+      </div>
+      <div class="exp-right">
+        <h3>Employed Undergraduate Researcher &amp; Project Lead</h3>
+        <ul>
+          <li>Developing robot-human interactive control interfaces, focusing on the LECTER full lower limb and hip isolated exoskeleton programs.</li>
+          <li>Undergraduate Project Lead for the hip isolated exoskeleton — submitted grant requests and maintain weekly documentation for the overseeing professor.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-date">Fall 2025 — Spring 2026</div>
+        <div class="exp-org">Academic Advancement Center<br>ERAU, Daytona Beach</div>
+      </div>
+      <div class="exp-right">
+        <h3>Physics III TA / Recitation Tutor</h3>
+        <ul>
+          <li>Working alongside the Physics III professor to manage recitation periods and assist student comprehension of course material.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-date">Fall 2024 — Present</div>
+        <div class="exp-org">Engineering Physics Propulsion Lab<br>ERAU, Daytona Beach</div>
+      </div>
+      <div class="exp-right">
+        <h3>Undergraduate Researcher</h3>
+        <ul>
+          <li>Developing externally funded research projects with personal focus on the OpenMutt quadruped and OpenArm robotic arm.</li>
+          <li>Design, build, and collect test data on both platforms.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-date">Fall 2022 — Present</div>
+        <div class="exp-org">Embler Maritime<br>West Palm Beach, FL</div>
+      </div>
+      <div class="exp-right">
+        <h3>Marine CAD &amp; Manufacturing Consultant</h3>
+        <ul>
+          <li>Designing and manufacturing wood, acrylic, and 3D printed mechanical components for local yachts.</li>
+          <li>Experimentally tested and selected varnishes and coatings for wood, leather, and PLA in salty, high-UV marine environments.</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <section id="skills">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>Technical Skills</h2>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-group">
+        <h4>CAD &amp; Simulation</h4>
+        <ul>
+          <li>Autodesk Inventor</li><li>Fusion 360</li><li>CATIA</li>
+          <li>Siemens NX</li><li>FEA</li><li>URDF Modeling</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h4>Manufacturing</h4>
+        <ul>
+          <li>CNC Lathes &amp; Mills</li><li>3D Printing (FDM)</li>
+          <li>Laser Cutting</li><li>Welding</li><li>Hand &amp; Power Tools</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h4>Electrical</h4>
+        <ul>
+          <li>PCB Design (EasyEDA)</li><li>Soldering</li>
+          <li>Breadboarding</li><li>Wiring &amp; Harness Design</li><li>Power Systems</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h4>Programming</h4>
+        <ul>
+          <li>C / C++</li><li>Python</li><li>Java</li><li>Embedded Systems</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>Education</h2>
+    </div>
+    <div class="edu-block reveal">
+      <div>
+        <div class="edu-school-label">University</div>
+        <div class="edu-dates">Fall 2024 — Spring 2028</div>
+      </div>
+      <div class="edu-right">
+        <h3>Embry-Riddle Aeronautical University</h3>
+        <div class="edu-degree">B.S. Engineering Physics · Daytona Beach, Florida</div>
+        <div class="edu-conc">Concentration: Spacecraft Instrumentation</div>
+        <div class="edu-gpa-row">
+          <span class="edu-gpa-num">4.00</span>
+          <span class="edu-gpa-label">Cumulative GPA</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>Contact</h2>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-intro">
+        <p>I'm a rising junior actively seeking internship and research opportunities in mechatronics, robotics, mechanical design, and spacecraft systems.</p>
+        <p>Feel free to reach out — I'm always happy to discuss projects or potential collaborations.</p>
+      </div>
+      <div class="contact-details">
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-val"><a href="mailto:emblerk@my.erau.edu">emblerk@my.erau.edu</a></div>
+        </div>
+        <div>
+          <div class="contact-label">Phone</div>
+          <div class="contact-val"><a href="tel:+15619715314">+1 (561) 971-5314</a></div>
+        </div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-val"><a href="https://www.linkedin.com/in/killian-embler-56a858146" target="_blank">killian-embler-56a858146</a></div>
+        </div>
+        <div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-val"><a href="https://github.com/KillianEmbler" target="_blank">KillianEmbler</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="inner">
+    <span>© 2026 Killian Embler</span>
+    <span>Hosted on GitHub Pages</span>
+  </div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(r => observer.observe(r));
+
+  function addImage(containerId) {
+    const input = document.createElement('input');
+    input.type = 'file'; input.accept = 'image/*';
+    input.onchange = e => {
+      const file = e.target.files[0]; if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const container = document.getElementById(containerId);
+        const img = container.querySelector('img');
+        const placeholder = container.querySelector('.img-placeholder');
+        img.src = ev.target.result; img.classList.add('loaded');
+        placeholder.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    };
+    input.click();
+  }
+</script>
+</body>
+</html>
