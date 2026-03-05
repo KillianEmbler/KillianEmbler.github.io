@@ -303,8 +303,8 @@
     }
 
     /* ── REVEAL ── */
-    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
+    .reveal { opacity: 1; transform: none; transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal.hidden { opacity: 0; transform: translateY(16px); }
 
     @media (max-width: 680px) {
       .project-item, .exp-item, .edu-block, .contact-grid { grid-template-columns: 1fr; }
@@ -667,15 +667,21 @@
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── SCROLL REVEAL ──
   const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 60);
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08 });
-  reveals.forEach(r => observer.observe(r));
+  // Only animate if user hasn't indicated they prefer reduced motion
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    reveals.forEach(r => r.classList.add('hidden'));
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => {
+            e.target.classList.remove('hidden');
+          }, i * 60);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    reveals.forEach(r => observer.observe(r));
+  }
 
   // ── GALLERY SYSTEM ──
   // State: { galleryId: [dataURL, dataURL, ...] }
