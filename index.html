@@ -172,12 +172,23 @@
     .gallery-slide .slide-placeholder {
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 0.6rem; width: 100%; height: 100%;
-      font-size: 0.7rem; color: var(--light);
-      letter-spacing: 0.06em;
+      gap: 0.75rem; width: 100%; height: 100%;
+      font-size: 0.72rem; color: var(--light);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--surface);
     }
     .slide-placeholder svg {
-      width: 28px; height: 28px; opacity: 0.3;
+      width: 32px; height: 32px; opacity: 0.4; color: var(--light);
+    }
+    .slide-placeholder .placeholder-add-btn {
+      font-size: 0.7rem; color: var(--accent);
+      background: none; border: 1px solid var(--rule);
+      padding: 0.3rem 0.9rem; border-radius: 2px;
+      cursor: pointer; font-family: inherit; transition: all 0.2s;
+      margin-top: 0.25rem;
+    }
+    .slide-placeholder .placeholder-add-btn:hover {
+      border-color: var(--accent); background: rgba(26,74,122,0.06);
     }
 
     /* Gallery nav arrows */
@@ -664,18 +675,15 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // ── SCROLL REVEAL ──
   const reveals = document.querySelectorAll('.reveal');
-  // Only animate if user hasn't indicated they prefer reduced motion
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     reveals.forEach(r => r.classList.add('hidden'));
     const observer = new IntersectionObserver(entries => {
       entries.forEach((e, i) => {
         if (e.isIntersecting) {
-          setTimeout(() => {
-            e.target.classList.remove('hidden');
-          }, i * 60);
+          setTimeout(() => { e.target.classList.remove('hidden'); }, i * 60);
           observer.unobserve(e.target);
         }
       });
@@ -684,7 +692,6 @@
   }
 
   // ── GALLERY SYSTEM ──
-  // State: { galleryId: [dataURL, dataURL, ...] }
   const galleryState = {};
 
   function buildGallery(el) {
@@ -695,10 +702,9 @@
   }
 
   function renderGallery(el, id, max) {
-    const images = galleryState[id];
-    const count = Math.max(images.length, 1); // always show at least 1 slide
+    const images = galleryState[id] || [];
     const current = parseInt(el.dataset.current || '0');
-    const clamped = Math.min(current, images.length === 0 ? 0 : images.length - 1);
+    const clamped = images.length === 0 ? 0 : Math.min(current, images.length - 1);
 
     el.innerHTML = `
       <div class="gallery-viewport">
@@ -711,7 +717,8 @@
                     <circle cx="8.5" cy="8.5" r="1.5"/>
                     <path d="M21 15l-5-5L5 21"/>
                   </svg>
-                  <span>No images yet</span>
+                  <span>No photos added yet</span>
+                  <button class="placeholder-add-btn" onclick="galleryAddImage('${id}', ${max})">+ Add Photos</button>
                 </div>
               </div>`
             : images.map((src, i) =>
@@ -734,7 +741,7 @@
         : ''
       }
       <div class="gallery-footer">
-        <span class="gallery-counter">${images.length > 0 ? `${clamped + 1} / ${images.length}` : '0 / 0'}</span>
+        <span class="gallery-counter">${images.length > 0 ? `${clamped + 1} / ${images.length}` : 'No photos'}</span>
         ${images.length < max
           ? `<button class="gallery-add-btn" onclick="galleryAddImage('${id}', ${max})">+ Add Photo</button>`
           : `<span class="gallery-counter" style="color:var(--accent)">Max ${max} photos</span>`
@@ -747,8 +754,7 @@
   function galleryNav(id, dir) {
     const el = document.querySelector(`[data-gallery="${id}"]`);
     const current = parseInt(el.dataset.current || '0');
-    const next = current + dir;
-    el.dataset.current = next;
+    el.dataset.current = current + dir;
     renderGallery(el, id, parseInt(el.dataset.max));
   }
 
@@ -775,6 +781,18 @@
           loaded++;
           if (loaded === toLoad.length) {
             const el = document.querySelector(`[data-gallery="${id}"]`);
-            // jump to the first newly added image
             el.dataset.current = galleryState[id].length - toLoad.length;
-            render
+            renderGallery(el, id, max);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    };
+    input.click();
+  }
+
+  // ── INIT GALLERIES ──
+  document.querySelectorAll('.gallery').forEach(buildGallery);
+</script>
+</body>
+</html>
