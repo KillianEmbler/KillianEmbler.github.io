@@ -704,6 +704,17 @@
     const id = el.dataset.gallery;
     const max = parseInt(el.dataset.max) || 5;
     galleryState[id] = galleryState[id] || [];
+
+    // Pre-load any images defined in the data-images attribute
+    if (el.dataset.images && galleryState[id].length === 0) {
+      try {
+        const paths = JSON.parse(el.dataset.images);
+        galleryState[id] = paths;
+      } catch(e) {
+        console.warn('Could not parse data-images for gallery:', id, e);
+      }
+    }
+
     renderGallery(el, id, max);
   }
 
@@ -728,7 +739,7 @@
                 </div>
               </div>`
             : images.map((src, i) =>
-                `<div class="gallery-slide"><img src="${src}" alt="Project image ${i+1}"/></div>`
+                `<div class="gallery-slide"><img src="${src}" alt="Project image ${i+1}" loading="lazy"/></div>`
               ).join('')
           }
         </div>
