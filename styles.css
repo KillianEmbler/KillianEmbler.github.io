@@ -422,4 +422,12 @@ h2 { font-family: var(--font-serif); font-size: 1.9rem; font-weight: 500; line-h
 .ante-hint { display: block; font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; overflow-wrap: anywhere; }
 .ante-arrow { color: var(--light); font-size: 1rem; flex-shrink: 0; transition: color 0.2s; }
 .ante-links a:hover .ante-arrow { color: var(--accent); }
+/* Highlighted (primary) link: solid blue row */
+.ante-links li:has(.ante-primary) { border-bottom: 0; margin: 0.9rem 0; }
+.ante-links a.ante-primary {
+  background: var(--accent); color: #fff; border-radius: 2px; padding: 0.8rem 1rem;
+}
+.ante-links a.ante-primary:hover { background: var(--accent-dark); color: #fff; padding-left: 1.25rem; }
+.ante-links a.ante-primary .ante-hint { color: rgba(255, 255, 255, 0.82); }
+.ante-links a.ante-primary .ante-arrow, .ante-links a.ante-primary:hover .ante-arrow { color: #fff; }
 .ante-foot { padding: 1.25rem var(--gutter) calc(1.5rem + env(safe-area-inset-bottom)); text-align: center; font-size: 0.75rem; color: var(--muted); }
