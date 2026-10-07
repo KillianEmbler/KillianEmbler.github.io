@@ -1,4 +1,4 @@
-/* Killian Embler — portfolio behaviour
+/* Killian Embler - portfolio behaviour
    Everything here is progressive enhancement: with JS disabled the page is
    fully readable and the galleries are still swipe/scrollable. */
 (function () {
@@ -164,6 +164,19 @@
     Array.prototype.forEach.call(track.querySelectorAll('img'), function (img) {
       var raw = img.getAttribute('src');
       if (raw && raw.indexOf('%') === -1) img.setAttribute('src', encodeURI(raw));
+    });
+
+    // Tap/click a photo to open it full size in a new tab (lets phones pinch-zoom diagrams and posters)
+    Array.prototype.forEach.call(track.querySelectorAll('.slide img'), function (img) {
+      if (img.parentNode && img.parentNode.tagName === 'A') return;
+      var a = document.createElement('a');
+      a.className = 'slide-link';
+      a.href = img.getAttribute('src');
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.setAttribute('aria-label', 'Open full-size image: ' + (img.getAttribute('alt') || 'photo'));
+      img.parentNode.insertBefore(a, img);
+      a.appendChild(img);
     });
 
     // Drop slides whose image is missing so visitors never see broken-image icons
