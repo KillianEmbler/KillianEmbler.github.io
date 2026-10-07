@@ -233,7 +233,7 @@
               <li>Mechanical design, such as the universal ankles with dual four-bar linkages and Heim joints.</li>
               <li>Redesigning the electrical system to include a simple PCB and dual E-stop system for compactness, safety, and battery operation.</li>
               <li>Tuning the impedance controller for squat assistance.</li>
-              <li>Running tests with either Max or Cole in the exo.</li>
+              <li>Running tests with Max or Cole wearing the exoskeleton.</li>
               <li>Leading the presentation of our work at the IROS 2026 workshop.</li>
             </ul>
 
@@ -291,12 +291,12 @@
             <p>V0 and V1 were designed in EasyEDA. V1.5 and V2 were designed in KiCad.</p>
 
             <h4>Hardest problem</h4>
-            <p>The hardest technical problem for me has definitely been the PCB design. With V1.5, I bit off more than I could chew. By the time I reached a finalized design I had put in nearly a hundred hours, and it was still clearly unrefined, with poor EMI management. Worst of all, it used a random assortment of components that drove up assembly cost and made sourcing difficult, and it depended on a critical flash memory part that went into a multi-month global shortage halfway through the project.</p>
+            <p>The hardest technical problem for me has definitely been the PCB design. With V1.5, I bit off more than I could chew. By the time I reached a finalized design I had put in nearly a hundred hours, and it was still clearly unrefined, with poor EMI management. Most significantly, it used an inconsistent assortment of components that drove up assembly cost and complicated sourcing, and it depended on a critical flash memory part that entered a multi-month global shortage partway through the project.</p>
             <p>For V2, I went back to the drawing board with the experience from that failure. I set strict design requirements for myself: FCC limitations, supplier sourcing, existing inventory, replaceability of parts, and estimated production cost, all balanced against keeping full functionality. I made high-level design diagrams first, sourced the key components, and only then moved into a KiCad schematic and the board layout, applying what I had learned about proper circuit design for microcontrollers.</p>
             <p>V2 still takes some inspiration from the core Teensy architecture, and uses a Teensy bootloader chip to help with firmware. It takes much less than V1.5 did, since it is designed specifically for flight computing and not as a general-purpose development board.</p>
 
             <h4>Status</h4>
-            <p>The newest version is in production and currently going through bench testing and software development. It has not flown yet, so I don't have flight data for it to share.</p>
+            <p>The newest version is in production and currently going through bench testing and software development. It has not yet flown, so no flight data is available.</p>
           </div>
         </details>
       </article>
@@ -326,7 +326,7 @@
             <p>I was given the task of bridging the two: a new hip exoskeleton that uses what we learned mechanically from LECTER and begins testing with reinforcement learning.</p>
 
             <h4>Team</h4>
-            <p>Mainly me, with Dr. Shuzhen Luo as faculty advisor. Members of the LECTER team have recently helped prepare for the reinforcement learning work.</p>
+            <p>I am the primary contributor, with Dr. Shuzhen Luo as faculty advisor. Members of the LECTER team have recently helped prepare for the reinforcement learning work.</p>
 
             <h4>Key design decision</h4>
             <p>The biggest choice was removing the two hip degrees of freedom in the coronal plane that LECTER has. This exoskeleton focuses on gait, which does not need significant motion in the coronal plane, and removing those actuators allowed hip width adjustability, a more condensed back plate section, and an overall decrease in weight. Hip width adjustability lets the exoskeleton fit a wider range of wearers, which gives us more versatility in gait patterns. At each hip, flexion/extension is actuated and abduction/adduction is passive.</p>
@@ -339,7 +339,7 @@
             <p>This was the first project where I had expectations to meet but could work at my own discretion. That made design decisions hard, like what to keep or simplify mechanically and how it would benefit the project overall. The issue seems small, but it held back my work until I learned to take my design ideas, back them with reasoning under design constraints, and then carry them out with confidence that my decisions rested on sound logic.</p>
 
             <h4>Status and what's next</h4>
-            <p>The exoskeleton is in the late stages of assembly and has not been fully tested. The new PCB design is complete but has not been manufactured, so it currently runs on a less condensed wired setup. The controller is being built from simulations of a high-fidelity human model interacting with the exoskeleton's URDF, to produce a sim-to-real controller that will run on the exoskeleton's Raspberry Pi 4.</p>
+            <p>The exoskeleton is in the late stages of assembly and has not been fully tested. The new PCB design is complete but has not been manufactured, so it currently uses a less compact wired setup. The controller is being built from simulations of a high-fidelity human model interacting with the exoskeleton's URDF, to produce a sim-to-real controller that will run on the exoskeleton's Raspberry Pi 4.</p>
             <p>Next is refining the hardware implementation and starting to train the reinforcement learning controller for gait testing. Metabolic cost will be assessed in human experiments. It is one of the primary metrics of the other hip exoskeleton at the lab, so it allows a direct comparison of the mechanical designs and the controllers.</p>
           </div>
         </details>
@@ -373,13 +373,13 @@
             <p>The rocket is a simple external shell around a self-supporting internal architecture that holds all the avionics and output systems, like the gimbal.</p>
 
             <h4>Team and role</h4>
-            <p>The team is the same as SAMSARA's. Most of the early design work was done by me. Yusong Liang, an undergraduate, helped extensively on the software side. For more on the teams and the company, see the Embler Control Systems website.</p>
+            <p>The team is the same as SAMSARA's. I completed most of the early design work, and Yusong Liang, an undergraduate, contributed extensively on the software side. For more on the teams and the company, see the Embler Control Systems website.</p>
 
             <h4>Hardest problem</h4>
-            <p>The hardest technical problem was absolutely the software. Arduino Nanos are fantastic learning tools, but they hit a wall when parsing sensor inputs quickly and running controls out to servo motors. TVC is also such a daunting corner of model rocketry that very little documentation on how to implement it properly exists. Getting effective gimbal actuation took studying the basics of quaternion analysis, borrowing ideas from camera stabilization gimbal software, and a long iteration process within the limited computation and memory of an Arduino Nano.</p>
+            <p>The hardest technical problem was the software. Arduino Nanos are fantastic learning tools, but they hit a wall when parsing sensor inputs quickly and running controls out to servo motors. TVC is also a demanding area of model rocketry with very little documentation on proper implementation. Getting effective gimbal actuation took studying the basics of quaternion analysis, borrowing ideas from camera stabilization gimbal software, and a long iteration process within the limited computation and memory of an Arduino Nano.</p>
 
             <h4>Flights</h4>
-            <p>ALTAI has flown more than 5 times, carrying SAMSARA V1 (and V0 once). Flights reach roughly 30-40 ft at low velocity, on mainly D class motors chosen on purpose to give low-velocity test hops so we could study the stabilization better.</p>
+            <p>ALTAI has flown more than 5 times, carrying SAMSARA V1 (and V0 once). Flights reach roughly 30-40 ft at low velocity, primarily on D class motors, chosen deliberately to produce low-velocity test hops that allow closer study of the stabilization.</p>
             <p>During one of our most successful launches, the system recovered and held a vertical trajectory despite the low velocity and a gust of over 20 mph. Unfortunately, the data from that flight was lost. Power disconnected on impact and interrupted the SD card write. That has since been fixed: the computer now detects altitude and finalizes data recording before landing.</p>
 
             <h4>Recovery stage</h4>
@@ -414,10 +414,10 @@
             <p>I also took charge of the experimental design and the microcontroller communication with the DYN-210 dynamometer, which is the core sensing device of the apparatus. Each actuator was tested with a linearly increasing torque output against sliding friction until it stalled.</p>
 
             <h4>Hardest problem</h4>
-            <p>The hardest technical problem was absolutely communication between the controller and the DYN-210. Its output is a frequency-modulated signal that needed low-interference pullups and voltage dividers to work with the 3.3V SparkFun Pro Micro collecting the data. Documentation was limited and often roughly translated from Chinese. Getting the communication parameters right in my Arduino code was difficult, and it took my own basic Chinese plus help from native speakers I know who are not technical.</p>
+            <p>The hardest technical problem was communication between the controller and the DYN-210. Its output is a frequency-modulated signal that needed low-interference pullups and voltage dividers to work with the 3.3V SparkFun Pro Micro collecting the data. Documentation was limited and often roughly translated from Chinese. Getting the communication parameters right in my Arduino code was difficult, and it required my own basic Chinese along with help from native speakers I know who do not have a technical background.</p>
 
             <h4>Results</h4>
-            <p>The testbed was used to run a full evaluation of the cycloidal actuators, which gave us several important figures, including our key metrics of 26 Nm peak torque output and 94% torque transmission efficiency. The rig and dynamometer have a capacity of 100 Nm.</p>
+            <p>The testbed was used for a full evaluation of the cycloidal actuators, producing several important figures, including the key metrics of 26 Nm peak torque output and 94% torque transmission efficiency. The rig and dynamometer have a capacity of 100 Nm.</p>
 
             <h4>Status</h4>
             <p>The project is on hold while the feedback from the testbed is used to iterate on and improve the cycloidal actuators.</p>
@@ -452,10 +452,10 @@
             <p>The jigs allow the joints to be zeroed in an exact position when the controller initializes, and they keep results repeatable between testing sessions.</p>
 
             <h4>Hardest problem</h4>
-            <p>For a long time the largest problem has been getting the gait working and overcoming the mechanical problems that interfere with the controls. The robot positions its legs incorrectly in the gait, sitting too low to the ground, and does not move smoothly enough, which often stalls motors and breaks the controller. At its core this is a control issue, but reducing backlash in the limbs and increasing motor torque capacity will make the control problem easier to solve in the long run. We have also worked to cut weight as much as possible through compact redesigns and 3D printed manufacturing.</p>
+            <p>The largest ongoing problem has been getting the gait working and overcoming the mechanical problems that interfere with the controls. In the current gait the robot holds its legs in the wrong positions, sitting too low to the ground, and its motion is not smooth enough, which often stalls motors and causes the controller to fail. At its core this is a control issue, but reducing backlash in the limbs and increasing motor torque capacity will make the control problem easier to solve in the long run. We have also worked to cut weight as much as possible through compact redesigns and 3D printed manufacturing.</p>
 
             <h4>Status</h4>
-            <p>The quadruped has performed several walking demos in the lab (lab internal), mostly on a tether to slightly reduce weight and control the environment. Work is underway to update the cycloidal actuators for higher torque output and to improve the controller toward a consistent gait off the tether.</p>
+            <p>The quadruped has performed several walking demos in the lab (internal to the lab), primarily on a tether to take some of the weight off the robot and keep the environment controlled. Work is underway to update the cycloidal actuators for higher torque output and to improve the controller toward a consistent gait off the tether.</p>
           </div>
         </details>
       </article>
@@ -484,7 +484,7 @@
           <div class="more-body">
             <h4>Overview</h4>
             <p>OpenArm is a 5-DOF 3D printed robot arm designed to complement OpenMutt. It mounts on the quadruped's back to increase its functionality and interaction with its environment. I was one of the founding members of the project in Spring 2025, and I contributed a significant part of the mechanical design, the URDF modeling, and the manufacturing and assembly of a physical prototype.</p>
-            <p>The arm is cable driven, with 3D printed cycloidal gearboxes at the base joints. Moving actuators off the outer part of the arm eliminates weight out there, but it opened the door to backlash problems. It took several iterations to get the right tension in the system and reliable operation for precise tasks.</p>
+            <p>The arm is cable driven, with 3D printed cycloidal gearboxes at the base joints. Keeping actuators off the outer part of the arm removes weight from it, but introduced backlash problems. It took several iterations to get the right tension in the system and reliable operation for precise tasks.</p>
 
             <h4>Funding and presentation</h4>
             <p>The work received support from an ERAU Spark Grant and was presented at the 2025 Student Research Symposium, with both demos and a poster.</p>
@@ -493,13 +493,13 @@
             <p>In spring 2026, another EPPL project, Amigo, which designs payloads for the Unitree Go2 quadruped, asked us to adapt the arm into a more refined and compact version. The new design drops cable-driven actuation in favor of high torque density CubeMars actuators, and gives up one degree of freedom (wrist rotation), so the mini arm is 4 DOF. The new arm and dog combination was to be presented to ERAU executives and the project's industry supporter.</p>
 
             <h4>Hardest problem</h4>
-            <p>By far the hardest part was the timeline. Significant redesigns had to be made, implemented, evaluated, and revised in time to prepare for the demonstration.</p>
+            <p>The hardest part by far was the timeline. Significant redesigns had to be made, implemented, evaluated, and revised in time to prepare for the demonstration.</p>
 
             <h4>Results</h4>
-            <p>The mini arm works effectively with high torque capacity and little backlash, and it is within the constraints to mount on the Go2 payload. The demonstration went very well.</p>
+            <p>The mini arm works effectively with high torque capacity and little backlash, and it is within the constraints to mount on the Go2 payload. The demonstration was successful.</p>
 
             <h4>My role and team</h4>
-            <p>I was one member of the team at EPPL. I contributed significantly to the initial design and testing of the base arm, and Manuel Buenrostro developed the end effector.</p>
+            <p>I was part of the EPPL team and contributed significantly to the initial design and testing of the base arm, and Manuel Buenrostro developed the end effector.</p>
 
             <h4>Status</h4>
             <p>Work is in progress to further reduce backlash on the large version, reduce overall weight, and fully integrate its controls and electronics with those of the OpenMutt quadruped.</p>
@@ -538,7 +538,7 @@
             <p>In terms of actual development, the hardest problem was approaching the complexity of a real ecosystem in software and deciding what to simplify and what to keep high fidelity, so the model would give meaningful results. I handled that in a few ways, such as simplifying the predation system and using asexual reproduction while keeping the processes behind them. Tuning the system for greater fidelity and long-term stability would take more time and biological background than I had at the time, so getting even partial success through experimentation was very satisfying.</p>
 
             <h4>Results</h4>
-            <p>I did not run full environmental studies with it, but testing showed that introducing an invasive predator species to a coral reef often more than halved the time before the ecosystem collapsed. Removing important species had a similar effect.</p>
+            <p>Full environmental studies were not performed, but testing showed that introducing an invasive predator species to a coral reef often more than halved the time before the ecosystem collapsed. Removing important species had a similar effect.</p>
 
             <h4>What's next</h4>
             <p>The next major steps are increasing the accuracy of the simulation and getting more ecological backing for its parameters.</p>
