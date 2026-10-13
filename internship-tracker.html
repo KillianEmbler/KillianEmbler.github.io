@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Internship Tracker</title>
+<meta name="robots" content="noindex, nofollow, noarchive"/>
+<meta name="theme-color" content="#111010"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Tracker"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111010'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='17' text-anchor='middle' fill='white'%3ET%3C/text%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  :root{--black:#111010;--white:#faf9f7;--off:#f2f0ec;--mid:#6b6560;--border:#ddd8d0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--white);color:var(--black);font-family:'Cormorant Garamond',serif;}
+  button,select,a{cursor:pointer;}
+  input,textarea{cursor:text;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 48px;height:64px;background:var(--black);border-bottom:1px solid #333;}
+  .nav-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1.05rem;letter-spacing:5px;color:var(--white);text-decoration:none;text-transform:uppercase;}
+  .nav-sub{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:#aaa;}
+
+  /* PAGE HEADER */
+  .page-header{padding-top:64px;background:var(--black);text-align:center;padding-bottom:40px;border-bottom:2px solid var(--black);}
+  .page-eyebrow{font-size:.62rem;letter-spacing:7px;color:var(--mid);text-transform:uppercase;margin-top:48px;margin-bottom:16px;}
+  .page-title{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(2.6rem,8vw,6.5rem);color:var(--white);letter-spacing:-1px;line-height:1;}
+  .page-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:var(--mid);margin-top:12px;}
+
+  /* SYNC BAR */
+  .sync-bar{background:var(--off);border-bottom:1px solid var(--border);padding:7px 48px;display:flex;justify-content:flex-end;align-items:center;gap:14px;flex-wrap:wrap;}
+  .sync-btn{min-height:32px;padding:4px 12px;font-size:.55rem;}
+  .sync-status{font-size:.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--mid);}
+  .sync-status.ok{color:#3a8a5a;}
+  .sync-status.err{color:#c0392b;}
+
+  /* TAB BAR */
+  .tab-bar{display:flex;border-bottom:2px solid var(--black);background:var(--white);position:sticky;top:64px;z-index:50;flex-wrap:wrap;}
+  .tab{font-family:'Cormorant Garamond',serif;font-size:.7rem;font-weight:600;letter-spacing:4px;text-transform:uppercase;padding:16px 28px;border:none;background:none;color:var(--mid);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;min-height:44px;}
+  .tab.active{color:var(--black);border-bottom-color:var(--black);}
+  .tab:hover{color:var(--black);}
+
+  .wrap{max-width:1040px;margin:0 auto;padding:44px 40px 100px;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  /* SECTION HEADER */
+  .sec-hdr{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:14px;border-bottom:2px solid var(--black);}
+  .sec-title{font-family:'Playfair Display',serif;font-weight:900;font-size:1.9rem;letter-spacing:-.5px;}
+  .sec-tag{font-size:.58rem;letter-spacing:4px;text-transform:uppercase;color:var(--mid);}
+
+  /* SEARCH */
+  .search-row{margin-bottom:20px;position:relative;}
+  .search-row input.f{padding-left:38px;}
+  .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:.9rem;color:var(--mid);pointer-events:none;}
+
+  /* PILL ROWS */
+  .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .status-pill{padding:9px 16px;min-height:44px;display:inline-flex;align-items:center;font-family:'Cormorant Garamond',serif;font-size:.66rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;border:1.5px solid var(--border);color:var(--mid);background:var(--white);transition:all .2s;}
+  .status-pill:hover{border-color:var(--black);color:var(--black);}
+  .status-pill.active{background:var(--black);color:var(--white);border-color:var(--black);}
+
+  .status-badge{font-size:.56rem;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:var(--st-color);color:var(--white);font-weight:600;white-space:nowrap;}
+
+  /* FORM */
+  .form-card{border:1px solid var(--border);background:var(--off);padding:22px 24px 24px;margin-bottom:36px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+  .form-grid-2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+  .form-full{margin-bottom:14px;}
+  .field-label{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--mid);margin-bottom:6px;display:block;}
+  input.f,textarea.f,select.f{width:100%;min-height:44px;border:1px solid var(--border);padding:10px 14px;font-family:'Cormorant Garamond',serif;font-size:.95rem;background:var(--white);outline:none;transition:border-color .2s;color:var(--black);}
+  input.f:focus,textarea.f:focus,select.f:focus{border-color:var(--black);}
+  textarea.f{resize:vertical;min-height:70px;}
+
+  .btn-primary{border:2px solid var(--black);background:var(--black);color:var(--white);padding:12px 30px;min-height:44px;font-family:'Playfair Display',serif;font-size:.82rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;transition:all .2s;}
+  .btn-primary:hover{background:var(--white);color:var(--black);}
+  .btn-ghost{background:none;border:1px solid var(--border);font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--mid);padding:10px 18px;min-height:44px;font-family:'Cormorant Garamond',serif;transition:all .2s;}
+  .btn-ghost:hover{border-color:var(--black);color:var(--black);}
+
+  /* LIST HEADER */
+  .list-hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px;}
+  .list-count{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--mid);}
+
+  /* CARD LIST */
+  .card-list{display:flex;flex-direction:column;gap:14px;}
+  .empty{border:1px dashed var(--border);padding:36px 20px;text-align:center;font-size:.9rem;color:var(--mid);font-style:italic;}
+  .app-card{border:1px solid var(--border);background:var(--white);position:relative;}
+  .app-card-bar{position:absolute;top:0;left:0;bottom:0;width:4px;background:var(--st-color);}
+  .card-main{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:18px 20px 8px 24px;flex-wrap:wrap;}
+  .card-id{flex:1;min-width:200px;}
+  .card-company{font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;line-height:1.25;}
+  .card-role{font-size:.85rem;color:var(--mid);margin-top:2px;}
+  .card-badges{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .card-actions{display:flex;gap:6px;flex-shrink:0;}
+  .icon-btn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:none;border:1px solid var(--border);color:var(--mid);font-size:.85rem;transition:all .2s;flex-shrink:0;}
+  .icon-btn:hover{border-color:var(--black);color:var(--black);}
+  .card-meta-row{display:flex;gap:16px;flex-wrap:wrap;padding:0 20px 10px 24px;}
+  .card-meta-row span{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--mid);}
+  .card-note{padding:0 20px 16px 24px;font-size:.85rem;color:var(--mid);font-style:italic;line-height:1.55;}
+  .card-link{padding:0 20px 16px 24px;}
+  .card-link a{font-size:.72rem;letter-spacing:1px;color:var(--black);text-decoration:underline;word-break:break-all;}
+  .status-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:6px;padding:14px 20px 14px 24px;border-top:1px solid var(--border);background:var(--off);}
+  .status-btn{min-height:44px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.25;border:1px solid var(--border);background:var(--white);color:var(--mid);font-family:'Cormorant Garamond',serif;font-size:.6rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:6px 8px;transition:all .2s;}
+  .status-btn:hover{border-color:var(--black);color:var(--black);}
+  .status-btn.active{background:var(--st-btn-color);color:var(--white);border-color:var(--st-btn-color);}
+
+  /* MODAL */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;padding:20px;}
+  .modal-bg.open{display:flex;}
+  .modal{background:var(--white);border:1px solid var(--black);padding:30px;max-width:460px;width:100%;max-height:90vh;overflow-y:auto;}
+  .modal h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:18px;}
+  .modal label{display:block;font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--mid);margin:12px 0 5px;}
+  .modal input,.modal select,.modal textarea{width:100%;min-height:44px;border:1px solid var(--border);padding:10px 14px;font-family:'Cormorant Garamond',serif;font-size:.95rem;background:var(--off);outline:none;}
+  .modal textarea{min-height:70px;resize:vertical;}
+  .modal input:focus,.modal select:focus,.modal textarea:focus{border-color:var(--black);background:var(--white);}
+  .modal-note{font-size:.92rem;color:var(--mid);line-height:1.5;margin-bottom:8px;}
+  .modal-note.warn{color:#c0392b;}
+  .modal-btns{display:flex;margin-top:22px;gap:0;}
+  .modal-btns button{flex:1;min-height:48px;padding:12px;font-family:'Playfair Display',serif;font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:1px solid var(--black);transition:all .2s;}
+  .mbtn-save{background:var(--black);color:var(--white);}
+  .mbtn-save:hover{background:var(--mid);}
+  .mbtn-cancel{background:var(--white);color:var(--black);border-left:none;}
+  .mbtn-cancel:hover{background:var(--off);}
+
+  /* DASHBOARD */
+  .stats-strip{display:flex;flex-wrap:wrap;border-top:1px solid var(--border);border-left:1px solid var(--border);margin-bottom:44px;}
+  .stat-tile{flex:1;min-width:130px;text-align:center;padding:22px 10px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .stat-tile-val{font-family:'Playfair Display',serif;font-weight:900;font-size:2rem;line-height:1;}
+  .stat-tile-lbl{font-size:.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--mid);margin-top:6px;}
+
+  .breakdown-block{margin-bottom:44px;}
+  .stat-row{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap;}
+  .stat-label{width:100%;max-width:180px;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--black);flex-shrink:0;}
+  .stat-bar-track{flex:1;min-width:120px;height:10px;background:var(--off);border:1px solid var(--border);}
+  .stat-bar-fill{height:100%;}
+  .stat-val{min-width:90px;text-align:right;font-family:'Playfair Display',serif;font-weight:700;font-size:.85rem;flex-shrink:0;}
+
+  .week-chart-wrap{overflow-x:auto;padding-bottom:6px;}
+  .week-chart{display:flex;align-items:flex-end;gap:8px;height:180px;border-bottom:2px solid var(--black);min-width:min-content;padding:0 4px;}
+  .week-bar-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:38px;height:100%;flex-shrink:0;}
+  .week-bar-val{font-size:.62rem;font-weight:700;margin-bottom:4px;color:var(--black);}
+  .week-bar{width:22px;background:var(--black);min-height:2px;transition:height .3s;}
+  .week-labels{display:flex;gap:8px;padding:8px 4px 0;min-width:min-content;}
+  .week-lbl{min-width:38px;flex-shrink:0;text-align:center;font-size:.52rem;letter-spacing:1px;color:var(--mid);white-space:nowrap;}
+
+  footer{border-top:1px solid var(--border);padding:20px 48px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  footer span{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--mid);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .nav-sub{display:none;}
+    .page-header{padding-bottom:28px;}
+    .sync-bar{padding:7px 16px;}
+    .wrap{padding:26px 16px 80px;}
+    .form-grid,.form-grid-2{grid-template-columns:1fr;}
+    .form-card{padding:18px 16px 20px;}
+    .card-main{padding:16px 14px 6px 18px;}
+    .card-meta-row{padding:0 14px 8px 18px;}
+    .card-note{padding:0 14px 14px 18px;}
+    .card-link{padding:0 14px 14px 18px;}
+    .status-row{grid-template-columns:repeat(2,1fr);padding:12px 14px 12px 18px;}
+    .btn-primary{width:100%;}
+    footer{padding:18px 16px;flex-direction:column;text-align:center;}
+    .stat-label{max-width:none;}
+    input.f,textarea.f,select.f,.modal input,.modal select,.modal textarea{font-size:16px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Internship Tracker</span>
+  <span class="nav-sub">Applied → Offer</span>
+</nav>
+
+<div class="page-header">
+  <div class="page-eyebrow">Every Application, In One Place</div>
+  <h1 class="page-title">Internship Tracker</h1>
+  <div class="page-sub">Killian Embler</div>
+</div>
+
+<div class="sync-bar"><span class="sync-status" id="sync-status">Loading…</span><button class="btn-ghost sync-btn" id="pass-btn" style="display:none" onclick="openPassModal('change')">Passphrase</button></div>
+
+<div class="tab-bar">
+  <button class="tab active" onclick="switchTab('tracker',this)">Tracker</button>
+  <button class="tab" onclick="switchTab('dashboard',this)">Dashboard</button>
+</div>
+
+<div class="wrap">
+
+  <!-- TRACKER -->
+  <div class="tab-panel active" id="panel-tracker">
+
+    <!-- ADD FORM -->
+    <div class="form-card">
+      <div class="sec-hdr" style="margin-bottom:18px;">
+        <div class="sec-title" style="font-size:1.3rem;">Add Application</div>
+      </div>
+      <div class="form-grid">
+        <div><label class="field-label">Company</label><input
+    class="f" id="a-company" type="text" placeholder="e.g. Lockheed Martin"/></div>
+        <div><label class="field-label">Role</label><input class="f" id="a-role" type="text" placeholder="e.g. Engineering Intern"/></div>
+      </div>
+      <div class="form-grid-2">
+        <div><label class="field-label">Date Applied</label><input class="f" id="a-date" type="date"/></div>
+        <div><label class="field-label">Status</label>
+          <select class="f" id="a-status"></select>
+        </div>
+        <div><label class="field-label">Job Link <span style="text-transform:none;letter-spacing:0;">(optional)</span></label><input class="f" id="a-link" type="url" placeholder="https://…"/></div>
+      </div>
+      <div class="form-full"><label class="field-label">Notes</label><textarea class="f" id="a-notes" placeholder="Referral, contact, interview prep notes…"></textarea></div>
+      <button class="btn-primary" onclick="addApp()">+ Add Application</button>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-row">
+      <span class="search-icon">&#8981;</span>
+      <input class="f" id="search-box" type="text" placeholder="Search by company, role, or notes…" oninput="renderApps()"/>
+    </div>
+
+    <!-- STATUS FILTER -->
+    <div class="pill-row" id="status-filter-row"></div>
+
+    <div class="list-hdr">
+      <div class="list-count" id="list-count">0 applications</div>
+      <button class="btn-ghost" onclick="exportCSV()">↓ Export CSV</button>
+    </div>
+
+    <div class="card-list" id="card-list"></div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="tab-panel" id="panel-dashboard">
+    <div class="sec-hdr">
+      <div class="sec-title">Dashboard</div>
+      <div class="sec-tag">Your Pipeline, At A Glance</div>
+    </div>
+
+    <div class="stats-strip" id="stats-strip"></div>
+
+    <div class="breakdown-block">
+      <div class="sec-hdr" style="border-bottom:1px solid var(--border);margin-bottom:18px;padding-bottom:10px;">
+        <div class="sec-title" style="font-size:1.2rem;">Status Breakdown</div>
+      </div>
+      <div id="status-breakdown"></div>
+    </div>
+
+    <div class="breakdown-block">
+      <div class="sec-hdr" style="border-bottom:1px solid var(--border);margin-bottom:18px;padding-bottom:10px;">
+        <div class="sec-title" style="font-size:1.2rem;">Applications Per Week</div>
+      </div>
+      <div id="week-chart-holder"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3>Edit Application</h3>
+    <input type="hidden" id="e-id"/>
+    <label>Company</label><input id="e-company" type="text"/>
+    <label>Role</label><input id="e-role" type="text"/>
+    <label>Date Applied</label><input id="e-date" type="date"/>
+    <label>Status</label><select id="e-status"></select>
+    <label>Job Link</label><input id="e-link" type="url"/>
+    <label>Notes</label><textarea id="e-notes"></textarea>
+    <div class="modal-btns">
+      <button class="mbtn-save" onclick="saveEdit()">Save</button>
+      <button class="mbtn-cancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASSPHRASE MODAL -->
+<div class="modal-bg" id="pass-bg">
+  <div class="modal">
+    <h3>Cloud Passphrase</h3>
+    <p class="modal-note" id="p-msg"></p>
+    <label for="p-input">Passphrase</label>
+    <input id="p-input" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="At least 8 characters"/>
+    <p class="modal-note" style="margin-top:12px;">Your applications are encrypted on this device before they are uploaded, so the cloud copy is unreadable without this passphrase. Use the same passphrase on every device. If you forget it, the cloud copy cannot be recovered (your devices keep their local copies).</p>
+    <div class="modal-btns">
+      <button class="mbtn-save" onclick="savePass()">Save</button>
+      <button class="mbtn-cancel" onclick="closePassModal()">Not now</button>
+    </div>
+    <button class="btn-ghost" id="p-reset" style="display:none;margin-top:14px;width:100%;" onclick="resetCloud()">Replace cloud data with this device</button>
+  </div>
+</div>
+
+<footer>
+  <span>Internship Tracker · based on a tracker by Amelia Koth</span>
+  <span class="sync-status" id="footer-sync"></span>
+  <span>Track It. Land It.</span>
+</footer>
+
+<script src="tracker-config.js"></script>
+<script>
+/* ══════════════ CLOUD SYNC (JSONBin.io, encrypted) ══════════════ */
+/* Settings live in config.js. Applications are encrypted in this browser with
+   your passphrase (AES-GCM) before upload, so the bin only ever holds ciphertext. */
+var CFG = window.TRACKER_CONFIG || {};
+var JSONBIN_KEY = CFG.key || '';
+var JSONBIN_ID  = CFG.binId || '';
+var KEY_HEADER  = CFG.keyType === 'master' ? 'X-Master-Key' : 'X-Access-Key';
+var BIN_URL     = 'https://api.jsonbin.io/v3/b/' + JSONBIN_ID;
+var PASS_STORE  = 'tracker_passphrase';
+var cloudReady  = false;   // true only after the cloud copy was read (and unlocked) successfully
+var syncChain   = Promise.resolve();
+
+function cloudConfigured() { return !!(JSONBIN_KEY && JSONBIN_ID); }
+function hasCrypto() { return !!(window.crypto && window.crypto.subtle); }
+function authHeaders(json) { var h = {}; h[KEY_HEADER] = JSONBIN_KEY; if (json) h['Content-Type'] = 'application/json'; return h; }
+function getPass() { try { return localStorage.getItem(PASS_STORE) || ''; } catch(e) { return ''; } }
+function putPass(p) { try { localStorage.setItem(PASS_STORE, p); } catch(e) {} }
+
+function toB64(buf) { var b = new Uint8Array(buf), s = ''; for (var i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s); }
+function fromB64(str) { var s = atob(str), b = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return b; }
+
+async function deriveKey(pass, salt) {
+  var km = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name:'PBKDF2', salt:salt, iterations:250000, hash:'SHA-256' }, km, { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']);
+}
+async function encryptJSON(obj, pass) {
+  var salt = crypto.getRandomValues(new Uint8Array(16));
+  var iv = crypto.getRandomValues(new Uint8Array(12));
+  var key = await deriveKey(pass, salt);
+  var ct = await crypto.subtle.encrypt({ name:'AES-GCM', iv:iv }, key, new TextEncoder().encode(JSON.stringify(obj)));
+  return { v:1, salt:toB64(salt), iv:toB64(iv), data:toB64(ct) };
+}
+async function decryptJSON(payload, pass) {
+  var key = await deriveKey(pass, fromB64(payload.salt));
+  var pt = await crypto.subtle.decrypt({ name:'AES-GCM', iv:fromB64(payload.iv) }, key, fromB64(payload.data));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+function isEncrypted(v) { return !!(v && typeof v === 'object' && !Array.isArray(v) && v.v === 1 && v.data && v.iv && v.salt); }
+
+/* Read the cloud copy. Returns {state, apps}. Never throws. */
+async function pullFromCloud() {
+  try {
+    var res = await fetch(BIN_URL + '/latest', { headers: authHeaders(false) });
+    if (res.status === 401 || res.status === 403) return { state:'badkey' };
+    if (!res.ok) return { state:'error' };
+    var rec = (await res.json()).record || {};
+    var v = rec.apps;
+    if (v === undefined || v === null) return { state:'ok', apps:[] };
+    if (Array.isArray(v)) return { state:'ok', apps:v, plain:true };
+    if (isEncrypted(v)) {
+      var pass = getPass();
+      if (!pass) return { state:'nopass' };
+      try { return { state:'ok', apps: await decryptJSON(v, pass) }; }
+      catch(e) { return { state:'badpass' }; }
+    }
+    return { state:'error' };
+  } catch(e) { return { state:'offline' }; }
+}
+
+/* Writes are queued one at a time so quick edits can't overwrite each other. */
+function syncToCloud(data_key, data_val) {
+  syncChain = syncChain.then(function(){ return doSync(data_key, data_val); }).catch(function(){});
+  return syncChain;
+}
+async function doSync(data_key, data_val) {
+  if (!cloudConfigured()) { setSyncStatus('Local only', ''); return; }
+  if (!hasCrypto()) { setSyncStatus('Cloud sync needs https', 'err'); return; }
+  if (!cloudReady) { setSyncStatus('Not synced - unlock cloud first', 'err'); return; }
+  var pass = getPass();
+  if (!pass) { setSyncStatus('Passphrase needed', 'err'); return; }
+  try {
+    setSyncStatus('Syncing…', '');
+    var existing = await fetch(BIN_URL + '/latest', { headers: authHeaders(false) });
+    if (existing.status === 401 || existing.status === 403) { setSyncStatus('Key rejected - check config.js', 'err'); return; }
+    if (!existing.ok) { setSyncStatus('Sync error', 'err'); return; }
+    var current = (await existing.json()).record;
+    if (!current || typeof current !== 'object' || Array.isArray(current)) current = {};
+    current[data_key] = await encryptJSON(data_val, pass);
+    var res = await fetch(BIN_URL, { method:'PUT', headers: authHeaders(true), body: JSON.stringify(current) });
+    if (res.status === 401 || res.status === 403) { setSyncStatus('Key rejected - check config.js', 'err'); return; }
+    setSyncStatus(res.ok ? 'Synced ✓' : 'Sync error', res.ok ? 'ok' : 'err');
+  } catch(e) { setSyncStatus('Offline - saved on this device', 'err'); }
+}
+
+function setSyncStatus(msg, cls) {
+  ['sync-status','footer-sync'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) { el.textContent = msg; el.className = 'sync-status' + (cls ? ' ' + cls : ''); }
+  });
+}
+
+/* Load the cloud copy into this device (called at startup and after the passphrase changes). */
+async function initCloud() {
+  if (!cloudConfigured()) { setSyncStatus('Local only - cloud sync not configured', ''); return; }
+  document.getElementById('pass-btn').style.display = '';
+  if (!hasCrypto()) { setSyncStatus('Cloud sync needs https', 'err'); return; }
+  setSyncStatus('Loading…', '');
+  var r = await pullFromCloud();
+
+  if (r.state === 'badkey')  { setSyncStatus('Key rejected - check config.js', 'err'); return; }
+  if (r.state === 'offline') { setSyncStatus('Offline - using the copy on this device', 'err'); return; }
+  if (r.state === 'error')   { setSyncStatus('Sync error - check the bin ID and that the bin has content', 'err'); return; }
+  if (r.state === 'nopass')  { setSyncStatus('Passphrase needed', 'err'); openPassModal('unlock'); return; }
+  if (r.state === 'badpass') { setSyncStatus('Wrong passphrase', 'err'); openPassModal('bad'); return; }
+
+  var local = getApps();
+  if (r.apps.length === 0 && local.length > 0) {
+    /* cloud is empty but this device has data: upload it instead of wiping it */
+    cloudReady = true;
+    if (!getPass()) { setSyncStatus('Passphrase needed', 'err'); openPassModal('new'); return; }
+    await syncToCloud('apps', local);
+    return;
+  }
+  if (JSON.stringify(local) !== JSON.stringify(r.apps)) {
+    if (local.length) lss('apps_backup', local);   /* safety copy before the cloud version replaces it */
+    lss('apps', r.apps);
+  }
+  cloudReady = true;
+  if (!getPass()) { setSyncStatus('Passphrase needed', 'err'); openPassModal('new'); }
+  else {
+    setSyncStatus('Loaded ✓', 'ok');
+    if (r.plain && r.apps.length) await syncToCloud('apps', r.apps);   /* encrypt data that was stored unencrypted */
+  }
+  renderApps(); renderDashboard();
+}
+
+/* ── passphrase modal ── */
+function openPassModal(mode) {
+  var msgs = {
+    'new':    'Choose a passphrase to protect your cloud data.',
+    'unlock': 'Enter your passphrase to unlock your cloud data.',
+    'bad':    'That passphrase did not unlock the cloud data. Try again, or replace the cloud data with this device\'s copy.',
+    'change': 'Enter a passphrase. Changing it re-encrypts the cloud copy with the new one.'
+  };
+  var m = document.getElementById('p-msg');
+  m.textContent = msgs[mode] || msgs['new'];
+  m.className = 'modal-note' + (mode === 'bad' ? ' warn' : '');
+  document.getElementById('p-reset').style.display = (mode === 'bad' || mode === 'change') ? '' : 'none';
+  document.getElementById('p-input').value = '';
+  document.getElementById('pass-bg').classList.add('open');
+  setTimeout(function(){ document.getElementById('p-input').focus(); }, 50);
+}
+function closePassModal() { document.getElementById('pass-bg').classList.remove('open'); }
+async function savePass() {
+  var p = document.getElementById('p-input').value;
+  if (p.length < 8) { document.getElementById('p-msg').textContent = 'Use at least 8 characters.'; document.getElementById('p-msg').className = 'modal-note warn'; return; }
+  putPass(p);
+  closePassModal();
+  cloudReady = false;
+  await initCloud();
+}
+async function resetCloud() {
+  var p = document.getElementById('p-input').value;
+  if (p.length < 8) { document.getElementById('p-msg').textContent = 'Use at least 8 characters.'; document.getElementById('p-msg').className = 'modal-note warn'; return; }
+  if (!confirm('This replaces the cloud copy with the applications on this device, encrypted with this passphrase. Continue?')) return;
+  putPass(p);
+  closePassModal();
+  cloudReady = true;
+  await syncToCloud('apps', getApps());
+}
+document.getElementById('pass-bg').addEventListener('click', function(e){ if (e.target === this) closePassModal(); });
+document.getElementById('p-input').addEventListener('keydown', function(e){ if (e.key === 'Enter') savePass(); });
+
+/* ══════════════ LOCAL STORAGE HELPERS ══════════════ */
+function ls(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e) { return d; } }
+function lss(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+
+/* ══════════════ DATA MODEL ══════════════ */
+var STATUSES = ['Applied','Online Assessment','Interview','Offer','Rejected','Ghosted'];
+var STATUS_COLORS = {
+  'Applied':            { color:'#6b6560', bg:'#f2f0ec' },
+  'Online Assessment':  { color:'#b8860b', bg:'#fffbf0' },
+  'Interview':          { color:'#2c3e63', bg:'#e9edf4' },
+  'Offer':              { color:'#2d6a4f', bg:'#f0faf5' },
+  'Rejected':           { color:'#c0392b', bg:'#fdecea' },
+  'Ghosted':            { color:'#6b5b95', bg:'#f2eff6' }
+};
+
+function getApps() { return ls('apps', []); }
+function saveApps(apps) { lss('apps', apps); syncToCloud('apps', apps); }
+
+function todayISO() { var d = new Date(); var m = d.getMonth() + 1, day = d.getDate(); return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (day < 10 ? '0' : '') + day; }
+function uid() { return 'a_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+/* ══════════════ SELECT BUILDERS ══════════════ */
+function renderStatusSelectOptions() {
+  var selects = [document.getElementById('a-status'), document.getElementById('e-status')];
+  var html = STATUSES.map(function(s){ return '<option value="'+escAttr(s)+'">'+esc(s)+'</option>'; }).join('');
+  selects.forEach(function(sel){ if (sel) sel.innerHTML = html; });
+}
+
+/* ══════════════ FILTERS ══════════════ */
+var activeStatusFilter = 'all';
+
+function renderStatusFilterPills() {
+  var el = document.getElementById('status-filter-row');
+  var html = '<button class="status-pill'+(activeStatusFilter==='all'?' active':'')+'" onclick="filterStatus(\'all\',this)">All</button>';
+  html += STATUSES.map(function(s){
+    return '<button class="status-pill'+(activeStatusFilter===s?' active':'')+'" onclick="filterStatus(\''+escJsAttr(s)+'\',this)">'+esc(s)+'</button>';
+  }).join('');
+  el.innerHTML = html;
+}
+
+function filterStatus(s, btn) {
+  activeStatusFilter = s;
+  document.querySelectorAll('#status-filter-row .status-pill').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderApps();
+}
+
+function getVisibleApps() {
+  var apps = getApps();
+  if (activeStatusFilter !== 'all') apps = apps.filter(function(a){ return a.status === activeStatusFilter; });
+  var q = (document.getElementById('search-box').value || '').trim().toLowerCase();
+  if (q) apps = apps.filter(function(a){
+    return (a.company||'').toLowerCase().indexOf(q) > -1 ||
+           (a.role||'').toLowerCase().indexOf(q) > -1 ||
+           (a.notes||'').toLowerCase().indexOf(q) > -1;
+  });
+  apps = apps.slice().sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
+  return apps;
+}
+
+/* ══════════════ ADD / EDIT / DELETE ══════════════ */
+function addApp() {
+  var company = document.getElementById('a-company').value.trim();
+  var role = document.getElementById('a-role').value.trim();
+  if (!company) { document.getElementById('a-company').focus(); return; }
+  if (!role) { document.getElementById('a-role').focus(); return; }
+
+  var apps = getApps();
+  apps.push({
+    id: uid(),
+    company: company,
+    role: role,
+    date: document.getElementById('a-date').value || todayISO(),
+    status: document.getElementById('a-status').value,
+    link: document.getElementById('a-link').value.trim(),
+    notes: document.getElementById('a-notes').value.trim()
+  });
+  saveApps(apps);
+
+  document.getElementById('a-company').value = '';
+  document.getElementById('a-role').value = '';
+  document.getElementById('a-link').value = '';
+  document.getElementById('a-notes').value = '';
+  document.getElementById('a-date').value = todayISO();
+  document.getElementById('a-status').value = STATUSES[0];
+
+  renderApps();
+  renderDashboard();
+}
+
+function delApp(id) {
+  if (!confirm('Delete this application?')) return;
+  saveApps(getApps().filter(function(a){ return a.id !== id; }));
+  renderApps();
+  renderDashboard();
+}
+
+function setStatus(id, status) {
+  var apps = getApps();
+  var a = apps.find(function(x){ return x.id === id; });
+  if (a) a.status = status;
+  saveApps(apps);
+  renderApps();
+  renderDashboard();
+}
+
+function openEditModal(id) {
+  var a = getApps().find(function(x){ return x.id === id; });
+  if (!a) return;
+  document.getElementById('e-id').value = a.id;
+  document.getElementById('e-company').value = a.company || '';
+  document.getElementById('e-role').value = a.role || '';
+  document.getElementById('e-date').value = a.date || todayISO();
+  document.getElementById('e-status').value = a.status || STATUSES[0];
+  document.getElementById('e-link').value = a.link || '';
+  document.getElementById('e-notes').value = a.notes || '';
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-bg').classList.remove('open');
+}
+
+function saveEdit() {
+  var id = document.getElementById('e-id').value;
+  var company = document.getElementById('e-company').value.trim();
+  var role = document.getElementById('e-role').value.trim();
+  if (!company || !role) return;
+  var apps = getApps();
+  var a = apps.find(function(x){ return x.id === id; });
+  if (!a) return;
+  a.company = company;
+  a.role = role;
+  a.date = document.getElementById('e-date').value || todayISO();
+  a.status = document.getElementById('e-status').value;
+  a.link = document.getElementById('e-link').value.trim();
+  a.notes = document.getElementById('e-notes').value.trim();
+  saveApps(apps);
+  closeModal();
+  renderApps();
+  renderDashboard();
+}
+
+document.getElementById('modal-bg').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
+
+/* ══════════════ RENDER CARD LIST ══════════════ */
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function escAttr(s) { return esc(s); }
+function escJsAttr(s) {
+  s = String(s == null ? '' : s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  return esc(s);
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  var d = new Date(iso + 'T00:00:00');
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+}
+
+function renderApps() {
+  renderStatusFilterPills();
+  var apps = getVisibleApps();
+  document.getElementById('list-count').textContent = apps.length + (apps.length === 1 ? ' application' : ' applications');
+  var el = document.getElementById('card-list');
+  if (!apps.length) { el.innerHTML = '<div class="empty">No applications match your filters yet.</div>'; return; }
+
+  el.innerHTML = apps.map(function(a) {
+    var sc = STATUS_COLORS[a.status] || STATUS_COLORS['Applied'];
+    var noteHtml = a.notes ? '<div class="card-note">' + esc(a.notes.length > 140 ? a.notes.slice(0,140) + '…' : a.notes) + '</div>' : '';
+    var linkHtml = a.link ? '<div class="card-link"><a href="' + escAttr(a.link) + '" target="_blank" rel="noopener noreferrer">' + esc(a.link) + '</a></div>' : '';
+    var statusBtns = STATUSES.map(function(s) {
+      var bc = STATUS_COLORS[s];
+      var isActive = a.status === s;
+      return '<button class="status-btn' + (isActive ? ' active' : '') + '" style="--st-btn-color:' + bc.color + ';" onclick="setStatus(\'' + a.id + '\',\'' + escJsAttr(s) + '\')">' + esc(s) + '</button>';
+    }).join('');
+
+    return '<div class="app-card">' +
+      '<div class="app-card-bar" style="--st-color:' + sc.color + ';"></div>' +
+      '<div class="card-main">' +
+        '<div class="card-id">' +
+          '<div class="card-company">' + esc(a.company) + '</div>' +
+          '<div class="card-role">' + esc(a.role) + '</div>' +
+        '</div>' +
+        '<div class="card-badges">' +
+          '<span class="status-badge" style="--st-color:' + sc.color + ';">' + esc(a.status) + '</span>' +
+        '</div>' +
+        '<div class="card-actions">' +
+          '<button class="icon-btn" title="Edit" onclick="openEditModal(\'' + a.id + '\')">&#9998;</button>' +
+          '<button class="icon-btn" title="Delete" onclick="delApp(\'' + a.id + '\')">&#10005;</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="card-meta-row"><span>' + fmtDate(a.date) + '</span></div>' +
+      noteHtml +
+      linkHtml +
+      '<div class="status-row">' + statusBtns + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+/* ══════════════ CSV EXPORT ══════════════ */
+function csvField(val) {
+  var s = String(val == null ? '' : val).replace(/"/g, '""');
+  return '"' + s + '"';
+}
+
+function exportCSV() {
+  var apps = getVisibleApps();
+  if (!apps.length) { alert('No applications to export — try clearing your filters.'); return; }
+  var rows = [['Company','Role','Status','Date Applied','Link','Notes']];
+  apps.forEach(function(a) {
+    rows.push([a.company||'', a.role||'', a.status||'', a.date||'', a.link||'', a.notes||'']);
+  });
+  var csv = rows.map(function(r){ return r.map(csvField).join(','); }).join('\r\n');
+  var blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = 'internship-applications-' + todayISO() + '.csv';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+
+/* ══════════════ DASHBOARD ══════════════ */
+function renderDashboard() {
+  var apps = getApps();
+  var total = apps.length;
+
+  var offers = apps.filter(function(a){ return a.status === 'Offer'; }).length;
+  var active = apps.filter(function(a){ return a.status !== 'Rejected' && a.status !== 'Ghosted'; }).length;
+  var interviewing = apps.filter(function(a){ return a.status === 'Interview' || a.status === 'Offer'; }).length;
+  var responseRate = total ? Math.round((interviewing / total) * 100) : 0;
+
+  var tiles = [
+    { val: total, lbl: 'Total Applications' },
+    { val: active, lbl: 'Active' },
+    { val: offers, lbl: 'Offers' },
+    { val: responseRate + '%', lbl: 'Interview Rate' }
+  ];
+  document.getElementById('stats-strip').innerHTML = tiles.map(function(t){
+    return '<div class="stat-tile"><div class="stat-tile-val">' + t.val + '</div><div class="stat-tile-lbl">' + t.lbl + '</div></div>';
+  }).join('');
+
+  // status breakdown
+  var sbEl = document.getElementById('status-breakdown');
+  if (!total) {
+    sbEl.innerHTML = '<div class="empty">Add an application to see your breakdown.</div>';
+  } else {
+    sbEl.innerHTML = STATUSES.map(function(s) {
+      var count = apps.filter(function(a){ return a.status === s; }).length;
+      var pct = total ? Math.round((count / total) * 100) : 0;
+      var c = STATUS_COLORS[s];
+      return '<div class="stat-row">' +
+        '<div class="stat-label">' + esc(s) + '</div>' +
+        '<div class="stat-bar-track"><div class="stat-bar-fill" style="width:' + pct + '%;background:' + c.color + ';"></div></div>' +
+        '<div class="stat-val">' + count + ' · ' + pct + '%</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  renderWeekChart(apps);
+}
+
+function startOfWeek(iso) {
+  var d = new Date(iso + 'T00:00:00');
+  var day = d.getDay();
+  var diff = (day === 0 ? -6 : 1 - day);
+  d.setDate(d.getDate() + diff);
+  return d;
+}
+
+function fmtWeekLabel(d) {
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return months[d.getMonth()] + ' ' + d.getDate();
+}
+
+function renderWeekChart(apps) {
+  var holder = document.getElementById('week-chart-holder');
+  if (!apps.length) { holder.innerHTML = '<div class="empty">No applications yet — your weekly chart will appear here.</div>'; return; }
+
+  var dates = apps.map(function(a){ return a.date; }).filter(Boolean).sort();
+  if (!dates.length) { holder.innerHTML = '<div class="empty">No dated applications yet.</div>'; return; }
+
+  var earliest = startOfWeek(dates[0]);
+  var now = startOfWeek(todayISO());
+  var weeks = [];
+  var cur = new Date(earliest);
+  while (cur <= now) {
+    weeks.push(new Date(cur));
+    cur = new Date(cur);
+    cur.setDate(cur.getDate() + 7);
+  }
+
+  var counts = weeks.map(function(wkStart) {
+    var wkEnd = new Date(wkStart);
+    wkEnd.setDate(wkEnd.getDate() + 6);
+    return apps.filter(function(a) {
+      if (!a.date) return false;
+      var d = new Date(a.date + 'T00:00:00');
+      return d >= wkStart && d <= wkEnd;
+    }).length;
+  });
+
+  var max = Math.max.apply(null, counts.concat([1]));
+
+  var bars = weeks.map(function(wkStart, i) {
+    var h = Math.round((counts[i] / max) * 140) + (counts[i] > 0 ? 2 : 0);
+    return '<div class="week-bar-col"><div class="week-bar-val">' + (counts[i] || '') + '</div><div class="week-bar" style="height:' + h + 'px;"></div></div>';
+  }).join('');
+
+  var labels = weeks.map(function(wkStart) {
+    return '<div class="week-lbl">' + fmtWeekLabel(wkStart) + '</div>';
+  }).join('');
+
+  holder.innerHTML = '<div class="week-chart-wrap"><div class="week-chart">' + bars + '</div><div class="week-labels">' + labels + '</div></div>';
+}
+
+/* ══════════════ TABS ══════════════ */
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('panel-' + tab).classList.add('active');
+  btn.classList.add('active');
+  if (tab === 'dashboard') renderDashboard();
+}
+
+/* ══════════════ INIT ══════════════ */
+(async function() {
+  setSyncStatus('Loading…', '');
+  document.getElementById('a-date').value = todayISO();
+  renderStatusSelectOptions();
+
+  try {
+    await initCloud();
+  } catch(e) {
+    setSyncStatus('Offline - using the copy on this device', 'err');
+  }
+
+  renderApps();
+  renderDashboard();
+
+  document.getElementById('a-company').addEventListener('keydown', function(e){ if (e.key === 'Enter') addApp(); });
+})();
+</script>
+</body>
+</html>
